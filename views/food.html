@@ -1,0 +1,23 @@
+<div>
+    <h1>Healthy Recipes</h1>
+
+    <!-- List of Recipes -->
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat="recipe in recipes">
+            <h5>{{ recipe.name }}</h5>
+            <p>{{ recipe.description }}</p>
+            <button class="btn btn-info btn-sm me-2" ng-click="viewRecipe(recipe)">View</button>
+            <button class="btn btn-danger btn-sm" ng-click="removeRecipe($index)">Remove</button>
+        </li>
+    </ul>
+
+    <!-- Add New Recipe -->
+    <h3 class="mt-4">Add New Recipe</h3>
+    <div class="mb-3">
+        <input type="text" class="form-control" placeholder="Recipe Name" ng-model="newRecipeName">
+    </div>
+    <div class="mb-3">
+        <textarea class="form-control" placeholder="Recipe Description" ng-model="newRecipeDescription"></textarea>
+    </div>
+    <button class="btn btn-success" ng-click="addRecipe()">Add Recipe</button>
+</div>
