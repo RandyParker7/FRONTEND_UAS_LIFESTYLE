@@ -5,23 +5,28 @@ app.config(function($routeProvider, $locationProvider) {
     $routeProvider
         .when('/', {
             templateUrl: 'views/home.html',
-            controller: 'HomeController'
+            controller: 'HomeController',
+            css: 'css/style.css'
         })
         .when('/article', {
-            templateUrl: 'views/article.html',
-            controller: 'ArticlesController'
+            templateUrl: 'views/articles.html',
+            controller: 'ArticlesController',
+            css: 'css/style.css'
         })
         .when('/food', {
             templateUrl: 'views/food.html',
-            controller: 'FoodController'
+            controller: 'FoodController',
+            css: 'css/style.css'
         })
         .when('/workout', {
             templateUrl: 'views/workout.html',
-            controller: 'WorkoutController'
+            controller: 'WorkoutController',
+            css: 'css/style.css'
         })
         .when('/profile', {
             templateUrl: 'views/profile.html',
-            controller: 'ProfileController'
+            controller: 'ProfileController',
+            css: 'css/style.css'
         })
         .otherwise({
             redirectTo: '/'
@@ -30,27 +35,3 @@ app.config(function($routeProvider, $locationProvider) {
     $locationProvider.hashPrefix('');
 });
 
-// Kontroler untuk Home
-app.controller('HomeController', function($scope) {
-    console.log('HomeController loaded');
-    $scope.message = 'Welcome to the Healthy Lifestyle website!';
-});
-
-// Kontroler untuk Articles
-app.controller('ArticlesController', function($scope) {
-    console.log('ArticlesController loaded');
-    $scope.articles = [
-        { title: 'Benefits of Yoga', content: 'Yoga improves flexibility and reduces stress.' },
-        { title: 'Healthy Breakfast Ideas', content: 'Start your day with energy-packed meals.' }
-    ];
-
-    $scope.addArticle = function() {
-        $scope.articles.push({ title: $scope.newArticleTitle, content: $scope.newArticleContent });
-        $scope.newArticleTitle = '';
-        $scope.newArticleContent = '';
-    };
-
-    $scope.removeArticle = function(index) {
-        $scope.articles.splice(index, 1);
-    };
-});

@@ -1,0 +1,27 @@
+<div>
+    <h1>Workout Routines</h1>
+    <ul>
+        <li ng-repeat="workout in workouts">
+            <strong>{{ workout.name }}</strong> - {{ workout.duration }} ({{ workout.intensity }})
+            <button ng-click="removeWorkout($index)">Remove</button>
+        </li>
+    </ul>
+
+    <h3>Add a New Workout</h3>
+    <form ng-submit="addWorkout()">
+        <label for="name">Workout Name:</label>
+        <input type="text" id="name" ng-model="newWorkoutName" required>
+        <br>
+        <label for="duration">Duration:</label>
+        <input type="text" id="duration" ng-model="newWorkoutDuration" required>
+        <br>
+        <label for="intensity">Intensity:</label>
+        <select id="intensity" ng-model="newWorkoutIntensity" required>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+        </select>
+        <br>
+        <button type="submit">Add Workout</button>
+    </form>
+</div>
