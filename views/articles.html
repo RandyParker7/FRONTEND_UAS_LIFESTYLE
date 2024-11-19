@@ -1,0 +1,18 @@
+<div>
+    <h1>Articles</h1>
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat="article in articles">
+            <h5>{{ article.title }}</h5>
+            <p>{{ article.content }}</p>
+        </li>
+    </ul>
+
+    <h3>Add New Article</h3>
+    <div class="mb-3">
+        <input type="text" class="form-control" placeholder="Title" ng-model="newArticleTitle">
+    </div>
+    <div class="mb-3">
+        <textarea class="form-control" placeholder="Content" ng-model="newArticleContent"></textarea>
+    </div>
+    <button class="btn btn-success" ng-click="addArticle()">Add Article</button>
+</div>
