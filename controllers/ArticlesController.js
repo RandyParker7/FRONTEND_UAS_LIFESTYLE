@@ -20,7 +20,7 @@ app.controller('ArticlesController', function($scope, $resource, $http) {
             content: $scope.newArticleContent
         });
         newArticle.$save().then(function() {
-            $scope.getArticles();  // Refresh the list of articles
+            $scope.getArticles();
             $scope.newArticleTitle = '';
             $scope.newArticleContent = '';
         });
@@ -29,23 +29,23 @@ app.controller('ArticlesController', function($scope, $resource, $http) {
     // Remove an article
     $scope.removeArticle = function(id) {
         Article.delete({ id: id }).$promise.then(function() {
-            $scope.getArticles();  // Refresh the list of articles
+            $scope.getArticles();
         });
     };
 
     // Edit an article
     $scope.editArticle = function(article) {
-        $scope.editingArticle = angular.copy(article); // Membuat salinan artikel untuk diedit
+        $scope.editingArticle = angular.copy(article);
     };
 
     // Update the article
     $scope.updateArticle = function() {
-        console.log('Updating article:', $scope.editingArticle); // Log artikel yang sedang diedit
+        console.log('Updating article:', $scope.editingArticle);
 
         // Gunakan $resource.update untuk memperbarui artikel
         Article.update({ id: $scope.editingArticle._id }, $scope.editingArticle).$promise
             .then(function(response) {
-                console.log('Article updated successfully:', response); // Log jika update berhasil
+                console.log('Article updated successfully:', response);
 
                 // Memperbarui artikel di daftar
                 const index = $scope.articles.findIndex(article => article._id === response._id);
@@ -57,7 +57,7 @@ app.controller('ArticlesController', function($scope, $resource, $http) {
                 $scope.editingArticle = null; 
             })
             .catch(function(error) {
-                console.error('Error updating article:', error); // Log jika ada error
+                console.error('Error updating article:', error);
             });
     };
 
