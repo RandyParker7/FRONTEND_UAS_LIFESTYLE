@@ -1,12 +1,37 @@
 <div>
     <h1>Articles</h1>
-    <ul class="list-group">
-        <li class="list-group-item" ng-repeat="article in articles">
-            <h5>{{ article.title }}</h5>
-            <p>{{ article.content }}</p>
-        </li>
-    </ul>
 
+    <!-- Display articles as cards -->
+    <div class="row">
+        <div class="col-md-4" ng-repeat="article in articles">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{ article.title }}</h5>
+                    <p class="card-text">{{ article.content }}</p>
+                    <!-- Button to trigger edit form -->
+                    <button class="btn btn-primary" ng-click="editArticle(article)">Edit</button>
+                </div>
+                <div class="card-footer text-muted">
+                    <button class="btn btn-danger" ng-click="removeArticle(article._id)">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Article Form -->
+    <div ng-if="editingArticle" class="mt-4">
+        <h3>Edit Article</h3>
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Title" ng-model="editingArticle.title">
+        </div>
+        <div class="mb-3">
+            <textarea class="form-control" placeholder="Content" ng-model="editingArticle.content"></textarea>
+        </div>
+        <button class="btn btn-warning" ng-click="updateArticle()">Update Article</button>
+        <button class="btn btn-secondary" ng-click="cancelEdit()">Cancel</button>
+    </div>
+
+    <!-- Add New Article Section -->
     <h3>Add New Article</h3>
     <div class="mb-3">
         <input type="text" class="form-control" placeholder="Title" ng-model="newArticleTitle">
