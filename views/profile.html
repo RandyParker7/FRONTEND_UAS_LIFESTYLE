@@ -1,20 +1,300 @@
-<div>
-    <h1>User Profile</h1>
-    <p><strong>Name:</strong> {{ user.name }}</p>
-    <p><strong>Age:</strong> {{ user.age }}</p>
-    <p><strong>Bio:</strong> {{ user.bio }}</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Profile</title>
+  <style>
+    /* General Styles */
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: radial-gradient(circle, #1a1a1a, #000);
+      color: white;
+      text-align: center;
+      overflow: hidden;
+    }
 
-    <h3>Update Profile</h3>
-    <form ng-submit="updateProfile()">
-        <label for="name">Name:</label>
-        <input type="text" id="name" ng-model="user.name" required>
-        <br>
-        <label for="age">Age:</label>
-        <input type="number" id="age" ng-model="user.age" required>
-        <br>
-        <label for="bio">Bio:</label>
-        <textarea id="bio" ng-model="user.bio" required></textarea>
-        <br>
-        <button type="submit">Update Profile</button>
-    </form>
-</div>
+    h1, h2, p {
+      margin: 0;
+    }
+
+    /* Centered Profile Layout */
+    .profile-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      position: relative;
+      width: 90%;
+      max-width: 450px;
+      background-color: #1e1e1e;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+    }
+
+    .profile-header {
+      margin-bottom: 20px;
+    }
+
+    .character-display {
+      position: relative;
+    }
+
+    .character {
+      width: 150px;
+      height: 150px;
+      background: url('https://via.placeholder.com/150') no-repeat center/cover;
+      border-radius: 50%;
+      border: 5px solid gold;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+      margin: 20px 0;
+    }
+
+    /* Equipment Buttons */
+    .equipment {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .equipment button {
+      padding: 10px 15px;
+      background: #333;
+      color: white;
+      border: 2px solid gold;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 12px;
+      text-transform: uppercase;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+
+    .equipment button:hover {
+      background: gold;
+      color: black;
+      transform: scale(1.1);
+    }
+
+    /* Stats Section */
+    .stats {
+      margin-top: 20px;
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat h2 {
+      font-size: 20px;
+      color: gold;
+    }
+
+    .stat p {
+      font-size: 14px;
+      color: lightgray;
+    }
+
+    /* Level & HP Bars */
+    .bars {
+      width: 80%;
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .bar {
+      height: 15px;
+      background: gray;
+      margin-bottom: 10px;
+      position: relative;
+      border-radius: 5px;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      border-radius: 5px;
+      position: absolute;
+    }
+
+    .level span {
+      width: 50%;
+      background: purple;
+    }
+
+    .hp span {
+      width: 70%;
+      background: red;
+    }
+
+    .mp span {
+      width: 30%;
+      background: blue;
+    }
+
+    /* Avatar Section */
+    .avatar-section {
+      margin-bottom: 20px;
+    }
+
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: gray;
+      margin-bottom: 10px;
+    }
+
+    .upload-btn {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Customization Section */
+    .customization-section {
+      margin-bottom: 20px;
+    }
+
+    .customization-section label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .apply-btn {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Description Section */
+    .description {
+      margin-top: 20px;
+      font-size: 14px;
+      color: lightgray;
+    }
+
+    /* BMI Button Styles */
+    .bmi-button {
+      margin-top: 20px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <!-- Profile Header -->
+    <div class="profile-header">
+      <h1>Hero: TestUser </h1>
+      <p>Job: None</p>
+    </div>
+
+    <!-- Character Display -->
+    <div class="character-display">
+      <div class="character"></div>
+      <div class="equipment">
+        <button>Sword</button>
+        <button>Helmet</button>
+        <button>Chest</button>
+        <button>Gloves</button>
+        <button>Boots</button>
+      </div>
+    </div>
+
+    <!-- Avatar Section -->
+    <div class="avatar-section">
+      <img id="avatar" src="https://via.placeholder.com/120" alt="Avatar" class="avatar">
+      <input type="file" id="upload-avatar" accept="image/*" style="display: none;">
+      <button class="upload-btn" onclick="document.getElementById('upload-avatar').click()">Upload Avatar</button>
+    </div>
+
+    <!-- Rank Section -->
+    <div class="rank">Rank: S</div>
+
+    <!-- Customization Section -->
+    <div class="customization-section">
+      <h3>Customize Your Character</h3>
+      <label for="color-picker">Choose Outfit Color:</label>
+      <input type="color" id="color-picker" value="#ff0000">
+      <button class="apply-btn">Apply</button>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="stats">
+      <div class="stat">
+        <h2>Power LV</h2>
+        <p>13830</p>
+      </div>
+      <div class="stat">
+        <h2>Damage</h2>
+        <p>1420.0</p>
+      </div>
+      <div class="stat">
+        <h2>Class</h2>
+        <p>Athlete</p>
+      </div>
+    </div>
+
+    <!-- Level and HP/MP Bars -->
+    <div class="bars">
+      <div class="bar level"><span></span></div>
+      <div class="bar hp"><span></span></div>
+      <div class="bar mp"><span></span></div>
+    </div>
+
+    <!-- Description Section -->
+    <div class="description">
+      <p>Sports Master is a legendary athlete known for unmatched speed and strength. With a unique set of skills, they dominate the field and inspire others.</p>
+    </div>
+
+    <!-- BMI Button Section -->
+    <button class="bmi-button" onclick="window.location.href='URL_HERE'">Go to BMI Calculator</button>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // Mengganti Avatar
+    const avatarInput = document.getElementById('upload-avatar');
+    const avatarImage = document.getElementById('avatar');
+
+    avatarInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          avatarImage.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Mengubah Warna Kostum
+    const colorPicker = document.getElementById('color-picker');
+    const applyButton = document.querySelector('.apply-btn');
+    const characterDisplay = document.querySelector('.character');
+
+    applyButton.addEventListener('click', () => {
+      const selectedColor = colorPicker.value;
+      characterDisplay.style.backgroundColor = selectedColor;
+    });
+  </script>
+</body>
+</html>
