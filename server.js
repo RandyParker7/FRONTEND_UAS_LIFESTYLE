@@ -23,9 +23,15 @@ const articleSchema = new mongoose.Schema({
   title: String,
   content: String
 });
+const workoutSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  duration: { type: String, required: true },
+  intensity: { type: String, required: true }
+});
 
 // Create a Model based on the schema
 const Article = mongoose.model('Article', articleSchema);
+const Workout = mongoose.model('Workout', workoutSchema);
 
 // Routes to handle CRUD operations
 
@@ -89,6 +95,39 @@ app.put('/api/articles/:id', async (req, res) => {
   });
   
 // Articles CRUD End //
+
+// Workout CRUD Start //
+// Get all workouts
+app.get('/api/workouts', async (req, res) => {
+  try {
+      const workouts = await Workout.find();
+      res.json(workouts);
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
+});
+
+// Add a new workout
+app.post('/api/workouts', async (req, res) => {
+  try {
+      const newWorkout = new Workout(req.body);
+      const savedWorkout = await newWorkout.save();
+      res.status(201).json(savedWorkout);
+  } catch (err) {
+      res.status(400).json({ error: err.message });
+  }
+});
+
+// Delete a workout
+app.delete('/api/workouts/:id', async (req, res) => {
+  try {
+      await Workout.findByIdAndDelete(req.params.id);
+      res.json({ message: 'Workout deleted successfully' });
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
+});
+// Workout CRUD End //
 
 // Start the server
 app.listen(port, () => {
