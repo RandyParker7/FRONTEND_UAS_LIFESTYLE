@@ -4,5 +4,34 @@ html {
 
 .nav {
     background-color: #05324d;
+    font-weight: bold;
+    padding: 1rem 1.5rem; 
+    font-size: 1.2rem; 
+    
 }
 
+.nav-link {
+    color: #fff;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #FF7043;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 2px;
+    width: 0;
+    background-color: #FF7043;
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
