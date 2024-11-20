@@ -1,9 +1,9 @@
-<div>
+<div ng-controller="WorkoutController" ng-init="getWorkouts()" class="container mt-4">
     <h1>Workout Routines</h1>
     <ul>
         <li ng-repeat="workout in workouts">
             <strong>{{ workout.name }}</strong> - {{ workout.duration }} ({{ workout.intensity }})
-            <button ng-click="removeWorkout($index)">Remove</button>
+            <button ng-click="removeWorkout(workout._id, $index)">Remove</button>
         </li>
     </ul>
 
