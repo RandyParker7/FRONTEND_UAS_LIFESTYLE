@@ -1,12 +1,14 @@
 app.controller('WorkoutController', function($scope, $http) {
     console.log('WorkoutController loaded');
+    const baseUrl = 'http://localhost:3000/api/workouts';
     
-    $scope.workouts = [];
+    $scope.workouts = []; 
 
     // Fetch workouts from the database
     $scope.getWorkouts = function() {
-        $http.get('http://localhost:3000/api/workouts')
+        $http.get(baseUrl)
             .then(function(response) {
+                // Angular will handle the array creation here automatically
                 $scope.workouts = response.data;
             })
             .catch(function(error) {
@@ -22,7 +24,7 @@ app.controller('WorkoutController', function($scope, $http) {
                 duration: $scope.newWorkoutDuration,
                 intensity: $scope.newWorkoutIntensity
             };
-            $http.post('http://localhost:3000/api/workouts', newWorkout)
+            $http.post(baseUrl, newWorkout)
                 .then(function(response) {
                     $scope.workouts.push(response.data);
                     $scope.newWorkoutName = '';
@@ -40,7 +42,7 @@ app.controller('WorkoutController', function($scope, $http) {
 
     // Remove a workout
     $scope.removeWorkout = function(id, index) {
-        $http.delete(`http://localhost:3000/api/workouts/${id}`)
+        $http.delete(`${baseUrl}/${id}`)
             .then(function() {
                 $scope.workouts.splice(index, 1);
             })
