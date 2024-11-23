@@ -13,6 +13,11 @@ app.config(function($routeProvider, $locationProvider) {
             controller: 'ArticlesController',
             css: 'css/style.css'
         })
+        .when('/article/:id', {
+            templateUrl: 'views/articleDetails.html',
+            controller: 'ArticleDetailsController',
+            css: 'css/style.css'
+        })
         .when('/food', {
             templateUrl: 'views/food.html',
             controller: 'FoodController',

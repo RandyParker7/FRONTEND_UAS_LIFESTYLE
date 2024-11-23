@@ -43,12 +43,7 @@ const User = mongoose.model('User', userSchema);
 
 // Routes to handle CRUD operations
 
-// Dummy user data (untuk testing)
-const users = [
-  { username: 'admin', password: 'admin123' },
-  { username: 'user', password: 'user123' }
-];
-
+// Login Register Start //
 // Login endpoint
 app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
@@ -79,27 +74,6 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-const authenticate = (req, res, next) => {
-  const token = req.headers['authorization'];
-
-  if (!token) {
-      return res.status(403).json({ message: 'No token provided' });
-  }
-
-  jwt.verify(token.split(' ')[1], SECRET_KEY, (err, decoded) => {
-      if (err) {
-          return res.status(401).json({ message: 'Failed to authenticate token' });
-      }
-
-      req.user = decoded;
-      next();
-  });
-};
-
-app.get('/api/protected-route', authenticate, (req, res) => {
-  res.json({ message: 'You have access to this protected route', user: req.user });
-});
-
 // Register endpoint
 app.post('/api/register', async (req, res) => {
   const { username, password } = req.body;
@@ -128,8 +102,9 @@ app.post('/api/register', async (req, res) => {
     res.status(500).json({ message: 'Error registering user' });
   }
 });
+// Login Register End //
 
-// Articles CRUD Start //
+// Articles Start //
 // Get all articles
 app.get('/api/articles', (req, res) => {
     Article.find({})
@@ -140,6 +115,21 @@ app.get('/api/articles', (req, res) => {
         res.status(500).send('Error retrieving articles');
       });
   });
+
+// Get an article by ID
+app.get('/api/articles/:id', (req, res) => {
+  Article.findById(req.params.id)
+      .then(article => {
+          if (!article) {
+              return res.status(404).send('Article not found');
+          }
+          res.json(article);
+      })
+      .catch(err => {
+          console.error('Error retrieving article:', err);
+          res.status(500).send('Error retrieving article');
+      });
+});
 
 // Add a new article
 app.post('/api/articles', (req, res) => {
@@ -186,10 +176,9 @@ app.put('/api/articles/:id', async (req, res) => {
       res.status(500).send('Error updating article');
     }
   });
-  
-// Articles CRUD End //
+// Articles End //
 
-// Workout CRUD Start //
+// Workout Start //
 // Get all workouts
 app.get('/api/workouts', async (req, res) => {
   try {
@@ -220,7 +209,7 @@ app.delete('/api/workouts/:id', async (req, res) => {
       res.status(500).json({ error: err.message });
   }
 });
-// Workout CRUD End //
+// Workout End //
 
 // Start the server
 app.listen(port, () => {
