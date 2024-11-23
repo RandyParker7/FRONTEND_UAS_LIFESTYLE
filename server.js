@@ -35,11 +35,18 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
 });
+const commentSchema = new mongoose.Schema({
+  articleId: { type: mongoose.Schema.Types.ObjectId, ref: 'Article', required: true },
+  author: { type: String, required: true },
+  content: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+});
 
 // Create a Model based on the schema
 const Article = mongoose.model('Article', articleSchema);
 const Workout = mongoose.model('Workout', workoutSchema);
 const User = mongoose.model('User', userSchema);
+const Comment = mongoose.model('Comment', commentSchema);
 
 // Routes to handle CRUD operations
 
@@ -53,7 +60,6 @@ app.post('/api/login', async (req, res) => {
   }
 
   try {
-    // Find user in MongoDB
     const user = await User.findOne({ username });
     if (!user) {
       return res.status(401).json({ message: 'Invalid username or password' });
@@ -83,16 +89,13 @@ app.post('/api/register', async (req, res) => {
   }
 
   try {
-    // Check if the user already exists
     const existingUser = await User.findOne({ username });
     if (existingUser) {
       return res.status(409).json({ message: 'Username already exists' });
     }
 
-    // Hash the password before saving
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create and save the new user
     const newUser = new User({ username, password: hashedPassword });
     await newUser.save();
 
@@ -161,21 +164,82 @@ app.delete('/api/articles/:id', (req, res) => {
 app.put('/api/articles/:id', async (req, res) => {
     try {
       const updatedArticle = await Article.findByIdAndUpdate(
-        req.params.id, // ID artikel yang ingin diperbarui
-        { title: req.body.title, content: req.body.content }, // Data baru untuk diperbarui
-        { new: true } // Mengembalikan artikel yang sudah diperbarui
+        req.params.id,
+        { title: req.body.title, content: req.body.content },
+        { new: true }
       );
   
       if (!updatedArticle) {
         return res.status(404).send('Article not found');
       }
   
-      res.json(updatedArticle); // Mengirimkan artikel yang telah diperbarui
+      res.json(updatedArticle);
     } catch (err) {
-      console.error('Error updating article:', err); // Log jika terjadi error di server
+      console.error('Error updating article:', err);
       res.status(500).send('Error updating article');
     }
   });
+
+// Get comments for an article
+app.get('/api/articles/:id/comments', async (req, res) => {
+  try {
+    const comments = await Comment.find({ articleId: req.params.id });
+    res.json(comments);
+  } catch (err) {
+    res.status(500).send('Error retrieving comments');
+  }
+});
+
+// Add a comment to an article
+app.post('/api/articles/:id/comments', async (req, res) => {
+  const { author, content } = req.body;
+  if (!author || !content) {
+    return res.status(400).send('Author and content are required');
+  }
+
+  try {
+    const comment = new Comment({ articleId: req.params.id, author, content });
+    await comment.save();
+    res.status(201).json(comment);
+  } catch (err) {
+    res.status(500).send('Error adding comment');
+  }
+});
+
+// Edit a comment
+app.put('/api/comments/:id', async (req, res) => {
+  const { content } = req.body;
+
+  try {
+    const updatedComment = await Comment.findByIdAndUpdate(
+      req.params.id,
+      { content },
+      { new: true }
+    );
+
+    if (!updatedComment) {
+      return res.status(404).send('Comment not found');
+    }
+
+    res.json(updatedComment);
+  } catch (err) {
+    console.error('Error updating comment:', err);
+    res.status(500).send('Error updating comment');
+  }
+});
+
+// Delete a comment
+app.delete('/api/comments/:id', async (req, res) => {
+  try {
+    const deletedComment = await Comment.findByIdAndDelete(req.params.id);
+    if (!deletedComment) {
+      return res.status(404).send('Comment not found');
+    }
+    res.json({ message: 'Comment deleted successfully' });
+  } catch (err) {
+    res.status(500).send('Error deleting comment');
+  }
+});
 // Articles End //
 
 // Workout Start //

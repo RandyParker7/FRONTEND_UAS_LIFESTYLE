@@ -1,9 +1,14 @@
 app.controller('ArticleDetailsController', function($scope, $routeParams, $http) {
     const articleId = $routeParams.id;
     const baseUrl = 'http://localhost:3000/api/articles';
+    const commentsBaseUrl = 'http://localhost:3000/api/comments';
 
     $scope.article = {};
     $scope.articles = [];
+    $scope.comments = [];
+    $scope.newComment = {};
+    $scope.editingComment = null;
+    $scope.currentUser = 'YourUsername';
 
     // Fetch the article by ID
     $http.get(`${baseUrl}/${articleId}`)
@@ -58,18 +63,15 @@ app.controller('ArticleDetailsController', function($scope, $routeParams, $http)
             .then(function(response) {
                 console.log('Article updated successfully:', response);
 
-                // Memperbarui artikel di daftar
                 const index = $scope.articles.findIndex(article => article._id === response.data._id);
                 if (index !== -1) {
                     $scope.articles[index] = response.data;
                 }
 
-                // Jika artikel yang sedang dilihat yang diupdate, update tampilannya
                 if ($scope.article._id === response.data._id) {
                     $scope.article = response.data;
                 }
 
-                // Reset form edit setelah sukses
                 $scope.editingArticle = null;
                 alert('Article updated successfully!');
             })
@@ -84,4 +86,79 @@ app.controller('ArticleDetailsController', function($scope, $routeParams, $http)
         $scope.editingArticle = null;
         alert('Edit canceled.');
     };
+
+    // Fetch comments for the article
+    $scope.getComments = function () {
+        $http.get(`${baseUrl}/${articleId}/comments`)
+        .then(function (response) {
+            $scope.comments = response.data;
+        })
+        .catch(function (error) {
+            console.error('Error fetching comments:', error);
+        });
+    };
+    
+    // Add a new comment
+    $scope.addComment = function () {
+        if (!$scope.newComment.content) {
+        alert('Comment content cannot be empty!');
+        return;
+        }
+    
+        const commentData = { author: $scope.currentUser, content: $scope.newComment.content };
+    
+        $http.post(`${baseUrl}/${articleId}/comments`, commentData)
+        .then(function (response) {
+            $scope.comments.push(response.data);
+            $scope.newComment = {}; // Reset form
+        })
+        .catch(function (error) {
+            console.error('Error adding comment:', error);
+        });
+    };
+    
+    // Edit a comment
+    $scope.editComment = function (comment) {
+        $scope.editingComment = angular.copy(comment);
+    };
+    
+    // Update a comment
+    $scope.updateComment = function () {
+        if (!$scope.editingComment.content) {
+            alert('Comment content cannot be empty!');
+            return;
+        }
+    
+        $http.put(`${commentsBaseUrl}/${$scope.editingComment._id}`, $scope.editingComment)
+            .then(function (response) {
+                const index = $scope.comments.findIndex(c => c._id === response.data._id);
+                if (index !== -1) {
+                    $scope.comments[index] = response.data;
+                }
+                $scope.editingComment = null;
+            })
+            .catch(function (error) {
+                console.error('Error updating comment:', error);
+            });
+    };
+    
+    // Delete a comment
+    $scope.deleteComment = function (id) {
+        $http.delete(`${commentsBaseUrl}/${id}`)
+        .then(function () {
+            $scope.comments = $scope.comments.filter(c => c._id !== id);
+        })
+        .catch(function (error) {
+            console.error('Error deleting comment:', error);
+        });
+    };
+
+    
+    // Cancel editing a comment
+    $scope.cancelEditComment = function () {
+        $scope.editingComment = null;
+    };
+    
+    // Initial data fetch
+    $scope.getComments();
 });

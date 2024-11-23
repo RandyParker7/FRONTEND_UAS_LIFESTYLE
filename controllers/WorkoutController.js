@@ -8,7 +8,6 @@ app.controller('WorkoutController', function($scope, $http) {
     $scope.getWorkouts = function() {
         $http.get(baseUrl)
             .then(function(response) {
-                // Angular will handle the array creation here automatically
                 $scope.workouts = response.data;
             })
             .catch(function(error) {
