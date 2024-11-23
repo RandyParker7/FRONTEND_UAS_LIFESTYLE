@@ -28,6 +28,16 @@ app.config(function($routeProvider, $locationProvider) {
             controller: 'ProfileController',
             css: 'css/style.css'
         })
+        .when('/login', {
+            templateUrl: 'views/login.html',
+            controller: 'LoginController',
+            css: 'css/style.css'
+        })
+        .when('/register', {
+            templateUrl: 'views/register.html',
+            controller: 'RegisterController',
+            css: 'css/style.css'
+        })        
         .otherwise({
             redirectTo: '/'
         });

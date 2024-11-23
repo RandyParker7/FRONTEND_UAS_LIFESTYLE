@@ -2,6 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
+const SECRET_KEY = 'your_secret_key';
+const bcrypt = require('bcrypt');
 
 // Create an Express application
 const app = express();
@@ -28,13 +31,103 @@ const workoutSchema = new mongoose.Schema({
   duration: { type: String, required: true },
   intensity: { type: String, required: true }
 });
+const userSchema = new mongoose.Schema({
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+});
 
 // Create a Model based on the schema
 const Article = mongoose.model('Article', articleSchema);
 const Workout = mongoose.model('Workout', workoutSchema);
+const User = mongoose.model('User', userSchema);
 
 // Routes to handle CRUD operations
 
+// Dummy user data (untuk testing)
+const users = [
+  { username: 'admin', password: 'admin123' },
+  { username: 'user', password: 'user123' }
+];
+
+// Login endpoint
+app.post('/api/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ message: 'Username and password are required' });
+  }
+
+  try {
+    // Find user in MongoDB
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid username or password' });
+    }
+
+    // Compare the provided password with the hashed password in the database
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Invalid username or password' });
+    }
+
+    // Generate a JWT token
+    const token = jwt.sign({ username: user.username }, SECRET_KEY, { expiresIn: '1h' });
+    res.json({ token });
+  } catch (err) {
+    console.error('Error during login:', err);
+    res.status(500).json({ message: 'Error during login' });
+  }
+});
+
+const authenticate = (req, res, next) => {
+  const token = req.headers['authorization'];
+
+  if (!token) {
+      return res.status(403).json({ message: 'No token provided' });
+  }
+
+  jwt.verify(token.split(' ')[1], SECRET_KEY, (err, decoded) => {
+      if (err) {
+          return res.status(401).json({ message: 'Failed to authenticate token' });
+      }
+
+      req.user = decoded;
+      next();
+  });
+};
+
+app.get('/api/protected-route', authenticate, (req, res) => {
+  res.json({ message: 'You have access to this protected route', user: req.user });
+});
+
+// Register endpoint
+app.post('/api/register', async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ message: 'Username and password are required' });
+  }
+
+  try {
+    // Check if the user already exists
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(409).json({ message: 'Username already exists' });
+    }
+
+    // Hash the password before saving
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create and save the new user
+    const newUser = new User({ username, password: hashedPassword });
+    await newUser.save();
+
+    res.status(201).json({ message: 'User registered successfully' });
+  } catch (err) {
+    console.error('Error registering user:', err);
+    res.status(500).json({ message: 'Error registering user' });
+  }
+});
 
 // Articles CRUD Start //
 // Get all articles
