@@ -119,6 +119,23 @@ app.post('/api/register', async (req, res) => {
 });
 // Login Register End //
 
+// Middleware to verify JWT token and extract user info
+const authenticateToken = (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) {
+    return res.status(401).json({ message: 'Access token is missing or invalid' });
+  }
+
+  jwt.verify(token, SECRET_KEY, (err, user) => {
+      if (err) {
+          console.error('JWT Verification Error:', err.message);
+          return res.status(403).json({ message: 'Invalid token' });
+      }
+      req.user = user;
+      next();
+  });
+};
+
 // Articles Start //
 // Get all articles
 app.get('/api/articles', (req, res) => {
@@ -201,23 +218,6 @@ app.get('/api/articles/:id/comments', async (req, res) => {
     res.status(500).send('Error retrieving comments');
   }
 });
-
-// Middleware to verify JWT token and extract user info
-const authenticateToken = (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) {
-    return res.status(401).json({ message: 'Access token is missing or invalid' });
-  }
-
-  jwt.verify(token, SECRET_KEY, (err, user) => {
-      if (err) {
-          console.error('JWT Verification Error:', err.message);
-          return res.status(403).json({ message: 'Invalid token' });
-      }
-      req.user = user;
-      next();
-  });
-};
 
 // Add a comment to an article
 app.post('/api/articles/:id/comments', authenticateToken, async (req, res) => {
@@ -365,20 +365,20 @@ app.delete('/api/recipes/:id', (req, res) => {
 // Update a recipe by ID
 app.put('/api/recipes/:id', async (req, res) => {
   try {
-    const updatedRecipe = await Recipe.findByIdAndUpdate(
-      req.params.id,
-      { name: req.body.name, ingredients: req.body.ingredients, instructions: req.body.instructions },
-      { new: true }
-    );
+      const updatedRecipe = await Recipe.findByIdAndUpdate(
+          req.params.id, 
+          req.body, // This will update all fields sent in the body
+          { new: true }
+      );
 
-    if (!updatedRecipe) {
-      return res.status(404).send('Recipe not found');
-    }
+      if (!updatedRecipe) {
+          return res.status(404).send('Recipe not found');
+      }
 
-    res.json(updatedRecipe);
+      res.json(updatedRecipe);
   } catch (err) {
-    console.error('Error updating recipe:', err);
-    res.status(500).send('Error updating recipe');
+      console.error('Error updating recipe:', err);
+      res.status(500).send('Error updating recipe');
   }
 });
 
