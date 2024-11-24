@@ -23,6 +23,11 @@ app.config(function($routeProvider, $locationProvider) {
             controller: 'FoodController',
             css: 'css/style.css'
         })
+        .when('/food/:id', {
+            templateUrl: 'views/recipeDetails.html',
+            controller: 'RecipeDetailsController',
+            css: 'css/style.css'
+        })
         .when('/workout', {
             templateUrl: 'views/workout.html',
             controller: 'WorkoutController',

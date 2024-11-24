@@ -41,12 +41,24 @@ const commentSchema = new mongoose.Schema({
   content: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
 });
+const recipeSchema = new mongoose.Schema({
+  title: String,
+  content: String
+});
+const recipeCommentSchema = new mongoose.Schema({
+  recipeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Recipe', required: true },
+  author: { type: String, required: true },
+  content: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+});
 
 // Create a Model based on the schema
 const Article = mongoose.model('Article', articleSchema);
 const Workout = mongoose.model('Workout', workoutSchema);
 const User = mongoose.model('User', userSchema);
 const Comment = mongoose.model('Comment', commentSchema);
+const Recipe = mongoose.model('Recipe', recipeSchema);
+const RecipeComment = mongoose.model('RecipeComment', recipeCommentSchema);
 
 // Routes to handle CRUD operations
 
@@ -296,6 +308,149 @@ app.delete('/api/workouts/:id', async (req, res) => {
   }
 });
 // Workout End //
+
+// Food Start //
+// Get all recipes
+app.get('/api/recipes', (req, res) => {
+  Recipe.find({})
+    .then(recipes => {
+      res.json(recipes);
+    })
+    .catch(err => {
+      res.status(500).send('Error retrieving recipes');
+    });
+});
+
+// Get a recipe by ID
+app.get('/api/recipes/:id', (req, res) => {
+  Recipe.findById(req.params.id)
+    .then(recipe => {
+      if (!recipe) {
+        return res.status(404).send('Recipe not found');
+      }
+      res.json(recipe);
+    })
+    .catch(err => {
+      console.error('Error retrieving recipe:', err);
+      res.status(500).send('Error retrieving recipe');
+    });
+});
+
+// Add a new recipe
+app.post('/api/recipes', (req, res) => {
+  const newRecipe = new Recipe(req.body);
+  newRecipe.save()
+    .then(recipe => {
+      res.status(201).json(recipe);
+    })
+    .catch(err => {
+      res.status(500).send('Error adding recipe');
+    });
+});
+
+// Delete a recipe by ID
+app.delete('/api/recipes/:id', (req, res) => {
+  Recipe.findByIdAndDelete(req.params.id)
+    .then(recipe => {
+      if (!recipe) {
+        return res.status(404).send('Recipe not found');
+      }
+      res.json({ message: 'Recipe deleted successfully' });
+    })
+    .catch(err => {
+      res.status(500).send('Error deleting recipe');
+    });
+});
+
+// Update a recipe by ID
+app.put('/api/recipes/:id', async (req, res) => {
+  try {
+    const updatedRecipe = await Recipe.findByIdAndUpdate(
+      req.params.id,
+      { name: req.body.name, ingredients: req.body.ingredients, instructions: req.body.instructions },
+      { new: true }
+    );
+
+    if (!updatedRecipe) {
+      return res.status(404).send('Recipe not found');
+    }
+
+    res.json(updatedRecipe);
+  } catch (err) {
+    console.error('Error updating recipe:', err);
+    res.status(500).send('Error updating recipe');
+  }
+});
+
+// Get comments for a specific recipe
+app.get('/api/recipes/:id/comments', async (req, res) => {
+  try {
+    const comments = await RecipeComment.find({ recipeId: req.params.id }).populate('recipeId');
+    res.json(comments);
+  } catch (err) {
+    console.error('Error retrieving comments:', err);
+    res.status(500).send('Error retrieving comments');
+  }
+});
+
+// Add a comment to a recipe
+app.post('/api/recipes/:id/comments', authenticateToken, async (req, res) => {
+  const { content } = req.body;
+  if (!content) {
+    return res.status(400).send('Content is required');
+  }
+
+  try {
+    const comment = new RecipeComment({
+      recipeId: req.params.id,
+      author: req.user.username,
+      content,
+    });
+    await comment.save();
+    res.status(201).json(comment);
+  } catch (err) {
+    console.error('Error adding comment:', err);
+    res.status(500).send('Error adding comment');
+  }
+});
+
+// Edit a comment on a recipe
+app.put('/api/recipes/:recipeId/comments/:id', async (req, res) => {
+  const { content } = req.body;
+
+  try {
+    const updatedComment = await RecipeComment.findByIdAndUpdate(
+      req.params.id,
+      { content },
+      { new: true }
+    );
+
+    if (!updatedComment) {
+      return res.status(404).send('Comment not found');
+    }
+
+    res.json(updatedComment);
+  } catch (err) {
+    console.error('Error updating comment:', err);
+    res.status(500).send('Error updating comment');
+  }
+});
+
+// Delete a comment from a recipe
+app.delete('/api/recipes/:recipeId/comments/:id', async (req, res) => {
+  const { recipeId, id } = req.params;
+  try {
+    const deletedComment = await RecipeComment.findByIdAndDelete(id);
+    if (!deletedComment) {
+      return res.status(404).send('Comment not found');
+    }
+    res.json({ message: 'Comment deleted successfully' });
+  } catch (err) {
+    console.error('Error deleting comment:', err);
+    res.status(500).send('Error deleting comment');
+  }
+});
+// Food End //
 
 // Start the server
 app.listen(port, () => {
