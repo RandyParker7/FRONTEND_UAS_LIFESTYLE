@@ -2,13 +2,14 @@ app.controller('ArticleDetailsController', function($scope, $routeParams, $http)
     const articleId = $routeParams.id;
     const baseUrl = 'http://localhost:3000/api/articles';
     const commentsBaseUrl = 'http://localhost:3000/api/comments';
+    const token = localStorage.getItem('authToken');
 
     $scope.article = {};
     $scope.articles = [];
     $scope.comments = [];
     $scope.newComment = {};
     $scope.editingComment = null;
-    $scope.currentUser = 'YourUsername';
+    $scope.currentUser = null;
 
     // Fetch the article by ID
     $http.get(`${baseUrl}/${articleId}`)
@@ -99,22 +100,35 @@ app.controller('ArticleDetailsController', function($scope, $routeParams, $http)
     };
     
     // Add a new comment
-    $scope.addComment = function () {
-        if (!$scope.newComment.content) {
+    $scope.addComment = function() {
+    if (!$scope.newComment.content) {
         alert('Comment content cannot be empty!');
         return;
-        }
-    
-        const commentData = { author: $scope.currentUser, content: $scope.newComment.content };
-    
-        $http.post(`${baseUrl}/${articleId}/comments`, commentData)
-        .then(function (response) {
-            $scope.comments.push(response.data);
-            $scope.newComment = {}; // Reset form
+    }
+
+    const commentData = { content: $scope.newComment.content };
+
+    $http.post(`${baseUrl}/${articleId}/comments`, commentData, {
+        headers: { Authorization: `Bearer ${token}` },
+    })
+        .then(function(response) {
+        $scope.comments.push(response.data);
+        $scope.newComment = {};
         })
-        .catch(function (error) {
-            console.error('Error adding comment:', error);
+        .catch(function(error) {
+        console.error('Error adding comment:', error);
+        if (error.status === 401) {
+            alert('You must be logged in to comment.');
+        }
         });
+    };
+
+    // Fetch the current user's username from the token
+    $scope.fetchCurrentUser = function() {
+    if (token) {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        $scope.currentUser = payload.username;
+    }
     };
     
     // Edit a comment
@@ -160,5 +174,6 @@ app.controller('ArticleDetailsController', function($scope, $routeParams, $http)
     };
     
     // Initial data fetch
+    $scope.fetchCurrentUser();
     $scope.getComments();
 });

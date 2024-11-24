@@ -190,19 +190,41 @@ app.get('/api/articles/:id/comments', async (req, res) => {
   }
 });
 
+// Middleware to verify JWT token and extract user info
+const authenticateToken = (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) {
+    return res.status(401).json({ message: 'Access token is missing or invalid' });
+  }
+
+  jwt.verify(token, SECRET_KEY, (err, user) => {
+      if (err) {
+          console.error('JWT Verification Error:', err.message);
+          return res.status(403).json({ message: 'Invalid token' });
+      }
+      req.user = user;
+      next();
+  });
+};
+
 // Add a comment to an article
-app.post('/api/articles/:id/comments', async (req, res) => {
-  const { author, content } = req.body;
-  if (!author || !content) {
-    return res.status(400).send('Author and content are required');
+app.post('/api/articles/:id/comments', authenticateToken, async (req, res) => {
+  const { content } = req.body;
+  if (!content) {
+      return res.status(400).send('Content is required');
   }
 
   try {
-    const comment = new Comment({ articleId: req.params.id, author, content });
-    await comment.save();
-    res.status(201).json(comment);
+      const comment = new Comment({
+          articleId: req.params.id,
+          author: req.user.username,
+          content,
+      });
+      await comment.save();
+      res.status(201).json(comment);
   } catch (err) {
-    res.status(500).send('Error adding comment');
+      console.error('Error adding comment:', err);
+      res.status(500).send('Error adding comment');
   }
 });
 
