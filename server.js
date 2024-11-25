@@ -5,6 +5,8 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = 'your_secret_key';
 const bcrypt = require('bcrypt');
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });
 
 // Create an Express application
 const app = express();
@@ -36,6 +38,7 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   email: { type: String, required: true, unique: true },
+  profileImage: { type: Buffer }
 });
 const commentSchema = new mongoose.Schema({
   articleId: { type: mongoose.Schema.Types.ObjectId, ref: 'Article', required: true },
@@ -504,6 +507,40 @@ app.get('/api/profile', authenticateToken, async (req, res) => {
   } catch (err) {
     console.error('Error fetching user profile:', err);
     res.status(500).json({ message: 'Error fetching user profile' });
+  }
+});
+
+// Add an endpoint to upload the profile image
+app.post('/api/uploadProfileImage', authenticateToken, upload.single('image'), async (req, res) => {
+  const userId = req.user.id;
+  const image = req.file.buffer;
+
+  try {
+      const user = await User.findByIdAndUpdate(userId, { profileImage: image }, { new: true });
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+      res.status(200).json({ message: 'Profile image uploaded successfully' });
+  } catch (err) {
+      console.error('Error uploading profile image:', err);
+      res.status(500).json({ message: 'Error uploading profile image' });
+  }
+});
+
+app.get('/api/profileImage', authenticateToken, async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+      const user = await User.findById(userId);
+      if (!user || !user.profileImage) {
+          return res.status(404).json({ message: 'Profile image not found' });
+      }
+
+      res.contentType('image/jpeg');
+      res.send(user.profileImage);
+  } catch (err) {
+      console.error('Error fetching profile image:', err);
+      res.status(500).json({ message: 'Error fetching profile image' });
   }
 });
 // Profile End //
