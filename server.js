@@ -35,6 +35,7 @@ const workoutSchema = new mongoose.Schema({
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
 });
 const commentSchema = new mongoose.Schema({
   articleId: { type: mongoose.Schema.Types.ObjectId, ref: 'Article', required: true },
@@ -66,25 +67,25 @@ const RecipeComment = mongoose.model('RecipeComment', recipeCommentSchema);
 // Login Register Start //
 // Login endpoint
 app.post('/api/login', async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  if (!username || !password) {
-    return res.status(400).json({ message: 'Username and password are required' });
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email and password are required' });
   }
 
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({ message: 'Invalid username or password' });
+      return res.status(401).json({ message: 'Invalid email or password' });
     }
 
     // Compare the provided password with the hashed password in the database
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Invalid username or password' });
+      return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    // Generate a JWT token
+    // Generate a JWT token with both id and username
     const token = jwt.sign({ id: user._id, username: user.username }, SECRET_KEY, { expiresIn: '1h' });
     res.json({ token });
   } catch (err) {
@@ -95,10 +96,10 @@ app.post('/api/login', async (req, res) => {
 
 // Register endpoint
 app.post('/api/register', async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, email } = req.body;
 
-  if (!username || !password) {
-    return res.status(400).json({ message: 'Username and password are required' });
+  if (!username || !password || !email) {
+    return res.status(400).json({ message: 'Username, password, and email are required' });
   }
 
   try {
@@ -107,9 +108,14 @@ app.post('/api/register', async (req, res) => {
       return res.status(409).json({ message: 'Username already exists' });
     }
 
+    const existingEmail = await User.findOne({ email });
+    if (existingEmail) {
+      return res.status(409).json({ message: 'Email is already in use' });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new User({ username, password: hashedPassword });
+    const newUser = new User({ username, password: hashedPassword, email });
     await newUser.save();
 
     res.status(201).json({ message: 'User registered successfully' });
@@ -482,6 +488,25 @@ app.delete('/api/recipes/:recipeId/comments/:id', async (req, res) => {
   }
 });
 // Food End //
+
+// Profile Start //
+// Profile endpoint to get the user's profile
+app.get('/api/profile', authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json({
+      username: user.username,
+      email: user.email
+    });
+  } catch (err) {
+    console.error('Error fetching user profile:', err);
+    res.status(500).json({ message: 'Error fetching user profile' });
+  }
+});
+// Profile End //
 
 // Start the server
 app.listen(port, () => {

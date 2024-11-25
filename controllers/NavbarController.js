@@ -12,10 +12,4 @@ app.controller('NavbarController', function($scope, $location) {
             checkLoginStatus();
         }
     });
-
-    $scope.logout = function() {
-        localStorage.removeItem('authToken');
-        $scope.isLoggedIn = false;
-        $location.path('/');
-    };
 });
