@@ -29,7 +29,8 @@ const articleSchema = new mongoose.Schema({
 const workoutSchema = new mongoose.Schema({
   name: { type: String, required: true },
   duration: { type: String, required: true },
-  intensity: { type: String, required: true }
+  intensity: { type: String, required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
 });
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
@@ -84,7 +85,7 @@ app.post('/api/login', async (req, res) => {
     }
 
     // Generate a JWT token
-    const token = jwt.sign({ username: user.username }, SECRET_KEY, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user._id, username: user.username }, SECRET_KEY, { expiresIn: '1h' });
     res.json({ token });
   } catch (err) {
     console.error('Error during login:', err);
@@ -131,7 +132,7 @@ const authenticateToken = (req, res, next) => {
           console.error('JWT Verification Error:', err.message);
           return res.status(403).json({ message: 'Invalid token' });
       }
-      req.user = user;
+      req.user = { id: user.id, username: user.username };
       next();
   });
 };
@@ -278,23 +279,53 @@ app.delete('/api/comments/:id', async (req, res) => {
 
 // Workout Start //
 // Get all workouts
-app.get('/api/workouts', async (req, res) => {
+app.get('/api/workouts', authenticateToken, async (req, res) => {
   try {
-      const workouts = await Workout.find();
+      const workouts = await Workout.find({ userId: req.user.id });
       res.json(workouts);
   } catch (err) {
+      console.error('Error fetching workouts:', err);
       res.status(500).json({ error: err.message });
   }
 });
 
 // Add a new workout
-app.post('/api/workouts', async (req, res) => {
+app.post('/api/workouts', authenticateToken, async (req, res) => {
   try {
-      const newWorkout = new Workout(req.body);
+      const newWorkout = new Workout({
+          ...req.body,
+          userId: req.user.id,
+      });
       const savedWorkout = await newWorkout.save();
       res.status(201).json(savedWorkout);
   } catch (err) {
+      console.error('Error adding workout:', err);
       res.status(400).json({ error: err.message });
+  }
+});
+
+// Update a workout
+app.put('/api/workouts/:id', authenticateToken, async (req, res) => {
+  try {
+    const workout = await Workout.findOne({ _id: req.params.id, userId: req.user.id });
+    if (!workout) {
+      return res.status(404).json({ message: 'Workout not found or not authorized to edit' });
+    }
+
+    const { name, duration, intensity } = req.body;
+    if (!name || !duration || !intensity) {
+      return res.status(400).json({ message: 'All fields (name, duration, intensity) are required' });
+    }
+
+    workout.name = name;
+    workout.duration = duration;
+    workout.intensity = intensity;
+
+    const updatedWorkout = await workout.save();
+    res.json(updatedWorkout);
+  } catch (err) {
+    console.error('Error updating workout:', err);
+    res.status(500).json({ error: err.message });
   }
 });
 
