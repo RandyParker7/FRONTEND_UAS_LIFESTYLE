@@ -48,6 +48,11 @@ app.config(function($routeProvider, $locationProvider) {
             controller: 'RegisterController',
             css: 'css/style.css'
         })        
+        .when('/admin', {
+            templateUrl: 'views/admin.html',
+            controller: 'AdminController',
+            css: 'css/style.css'
+        })        
         .otherwise({
             redirectTo: '/'
         });

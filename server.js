@@ -38,7 +38,8 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  profileImage: { type: Buffer }
+  profileImage: { type: Buffer },
+  isAdmin: { type: Boolean, default: false }
 });
 const commentSchema = new mongoose.Schema({
   articleId: { type: mongoose.Schema.Types.ObjectId, ref: 'Article', required: true },
@@ -65,6 +66,28 @@ const Comment = mongoose.model('Comment', commentSchema);
 const Recipe = mongoose.model('Recipe', recipeSchema);
 const RecipeComment = mongoose.model('RecipeComment', recipeCommentSchema);
 
+// Buat admin
+(async () => {
+  try {
+    const adminUser = await User.findOne({ username: 'admin' });
+    if (adminUser) {
+      console.log('Admin user already exists.');
+    } else {
+      const hashedPassword = await bcrypt.hash('adminpassword', 10);
+      const newAdminUser = new User({
+        username: 'admin',
+        password: hashedPassword,
+        email: 'admin@example.com',
+        isAdmin: true
+      });
+      await newAdminUser.save();
+      console.log('Admin user created successfully');
+    }
+  } catch (err) {
+    console.error('Error creating admin user:', err);
+  }
+})();
+
 // Routes to handle CRUD operations
 
 // Login Register Start //
@@ -89,7 +112,11 @@ app.post('/api/login', async (req, res) => {
     }
 
     // Generate a JWT token with both id and username
-    const token = jwt.sign({ id: user._id, username: user.username }, SECRET_KEY, { expiresIn: '1h' });
+    const token = jwt.sign(
+      { id: user._id, username: user.username, isAdmin: user.isAdmin },
+      SECRET_KEY,
+      { expiresIn: '1h' }
+    );    
     res.json({ token });
   } catch (err) {
     console.error('Error during login:', err);
@@ -99,7 +126,7 @@ app.post('/api/login', async (req, res) => {
 
 // Register endpoint
 app.post('/api/register', async (req, res) => {
-  const { username, password, email } = req.body;
+  const { username, password, email, isAdmin } = req.body;
 
   if (!username || !password || !email) {
     return res.status(400).json({ message: 'Username, password, and email are required' });
@@ -118,7 +145,12 @@ app.post('/api/register', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new User({ username, password: hashedPassword, email });
+    const newUser = new User({
+      username,
+      password: hashedPassword,
+      email,
+      isAdmin: isAdmin === true // Default is `false` if not provided
+    });
     await newUser.save();
 
     res.status(201).json({ message: 'User registered successfully' });
@@ -141,7 +173,7 @@ const authenticateToken = (req, res, next) => {
           console.error('JWT Verification Error:', err.message);
           return res.status(403).json({ message: 'Invalid token' });
       }
-      req.user = { id: user.id, username: user.username };
+      req.user = { id: user.id, username: user.username, isAdmin: user.isAdmin };
       next();
   });
 };
@@ -544,6 +576,19 @@ app.get('/api/profileImage', authenticateToken, async (req, res) => {
   }
 });
 // Profile End //
+
+// Admin Start //
+// Fetch all comments
+app.get('/api/comments', async (req, res) => {
+  try {
+      const comments = await Comment.find();
+      res.status(200).json(comments);
+  } catch (error) {
+      console.error('Error fetching comments:', error);
+      res.status(500).json({ error: 'Failed to fetch comments' });
+  }
+});
+// Admin End //
 
 // Start the server
 app.listen(port, () => {
