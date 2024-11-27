@@ -1,11 +1,6 @@
 <div class="container mt-4">
     <h1>Recipes</h1>
 
-    <!-- Add New Recipe Button -->
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRecipeModal">
-        Add New Recipe
-    </button>
-    
     <!-- Display recipes as cards -->
     <div class="row">
         <div class="col-md-4" ng-repeat="recipe in recipes">
@@ -18,28 +13,3 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal for Adding New Recipe -->
-    <div class="modal fade" id="addRecipeModal" tabindex="-1" aria-labelledby="addRecipeModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addRecipeModalLabel">Add New Recipe</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <input type="text" class="form-control" placeholder="Title" ng-model="newRecipeTitle">
-                    </div>
-                    <div class="mb-3">
-                        <textarea class="form-control" placeholder="Content" ng-model="newRecipeContent"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success" ng-click="addRecipe()">Add Recipe</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>

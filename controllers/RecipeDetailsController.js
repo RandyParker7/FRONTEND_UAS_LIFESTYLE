@@ -57,6 +57,12 @@ app.controller('RecipeDetailsController', function($scope, $routeParams, $http) 
             });
     };
 
+    // Membatalkan edit
+    $scope.cancelEdit = function() {
+        $scope.editingRecipe = null;
+        alert('Edit canceled.');
+    };
+
     // Fetch comments for the recipe
     $scope.getComments = function() {
         $http.get(`${commentsBaseUrl}`)
@@ -129,7 +135,6 @@ app.controller('RecipeDetailsController', function($scope, $routeParams, $http) 
             console.error('Error updating comment:', error);
         });
     };
-
 
     // Delete a comment
     $scope.deleteComment = function(commentId) {

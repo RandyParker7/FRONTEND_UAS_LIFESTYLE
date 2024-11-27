@@ -2,24 +2,7 @@
     <h1>{{ recipe.title }}</h1>
     <p>{{ recipe.content }}</p>
 
-    <!-- Edit Recipe Form -->
-    <div ng-if="editingRecipe" class="mt-4">
-        <h3>Edit Recipe</h3>
-        <div class="mb-3">
-            <input type="text" class="form-control" placeholder="Title" ng-model="editingRecipe.title">
-        </div>
-        <div class="mb-3">
-            <textarea class="form-control" placeholder="Content" ng-model="editingRecipe.content"></textarea>
-        </div>
-        <button class="btn btn-warning" ng-click="updateRecipe()">Update Recipe</button>
-        <button class="btn btn-secondary" ng-click="cancelEdit()">Cancel</button>
-    </div>
-
-    <div>
-        <button class="btn btn-primary" ng-click="editRecipe(recipe)">Edit</button>
-        <button class="btn btn-danger" ng-click="removeRecipe(recipe._id)">Delete</button>
-        <a href="#/food" class="btn btn-secondary">Back to Recipes</a>
-    </div>
+    <a href="#/food" class="btn btn-secondary">Back to Recipes</a>
 
     <!-- Comments Section -->
     <div class="mt-4">

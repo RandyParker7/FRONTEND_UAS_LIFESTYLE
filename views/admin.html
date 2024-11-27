@@ -1,5 +1,5 @@
 <div class="container mt-4">
-    <h1>Admin Panel</h1>
+    <h1>Admin Article Panel</h1>
 
     <!-- Add New Article -->
     <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addArticleModal">
@@ -22,7 +22,7 @@
     </div>
 
     <!-- Comments Section -->
-    <h2>Comments</h2>
+    <h2>Articles Comments</h2>
     <div ng-repeat="comment in comments" class="border p-3 mb-2">
         <p>{{ comment.content }}</p>
         <small>By {{ comment.author }} on {{ comment.createdAt | date:'short' }}</small>
@@ -64,6 +64,87 @@
                 <div class="modal-footer">
                     <button class="btn btn-warning" ng-click="updateArticle()">Update Article</button>
                     <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container mt-4">
+    <h1>Admin Food Panel</h1>
+
+    <!-- Add Recipe Modal -->
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRecipeModal">Add New Recipe</button>
+
+    <!-- Display all recipes -->
+    <h2 class="mt-4">Recipes</h2>
+    <div class="row">
+        <div class="col-md-4" ng-repeat="recipe in recipes">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{ recipe.title }}</h5>
+                    <p class="card-text">{{ recipe.content | limitTo: 100 }}{{ recipe.content.length > 100 ? '...' : '' }}</p>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editRecipeModal" ng-click="editRecipe(recipe)">Edit</button>
+                    <button class="btn btn-danger" ng-click="deleteRecipe(recipe._id)">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comments Section -->
+    <h2>Recipes Comments</h2>
+    <div ng-repeat="comment in recipeComments" class="border p-3 mb-2">
+        <p>{{ comment.content }}</p>
+        <small>By {{ comment.author }} on {{ comment.createdAt | date:'short' }}</small>
+        <button class="btn btn-danger btn-sm" ng-click="deleteRecipeComment(comment._id)">Delete</button>
+    </div>
+
+    <!-- Modal for Adding New Recipe -->
+    <div class="modal fade" id="addRecipeModal" tabindex="-1" aria-labelledby="addRecipeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addRecipeModalLabel">Add New Recipe</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" placeholder="Title" ng-model="newRecipe.title">
+                    </div>
+                    <div class="mb-3">
+                        <textarea class="form-control" placeholder="Content" ng-model="newRecipe.content"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" ng-click="addRecipe()">Add Recipe</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Recipe Modal -->
+    <div class="modal fade" id="editRecipeModal" tabindex="-1" aria-hidden="true" ng-show="editingRecipe">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Recipe</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Recipe Title Input -->
+                    <input type="text" class="form-control mb-3" placeholder="Title" ng-model="editingRecipe.title">
+    
+                    <!-- Recipe Content Textarea -->
+                    <textarea class="form-control" placeholder="Content" ng-model="editingRecipe.content"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <!-- Update Recipe Button -->
+                    <button class="btn btn-warning" ng-click="updateRecipe()">Update Recipe</button>
+    
+                    <!-- Cancel Button -->
+                    <button class="btn btn-secondary" ng-click="cancelEdit()" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
