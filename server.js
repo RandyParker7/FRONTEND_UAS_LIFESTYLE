@@ -73,7 +73,7 @@ const RecipeComment = mongoose.model('RecipeComment', recipeCommentSchema);
     if (adminUser) {
       console.log('Admin user already exists.');
     } else {
-      const hashedPassword = await bcrypt.hash('adminpassword', 10);
+      const hashedPassword = await bcrypt.hash('123', 10);
       const newAdminUser = new User({
         username: 'admin',
         password: hashedPassword,
