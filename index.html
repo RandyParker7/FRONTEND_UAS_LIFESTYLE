@@ -6,6 +6,9 @@
     <title>Healthy Lifestyle</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Bree+Serif&family=Oswald:wght@200..700&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <!-- AngularJS -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
@@ -24,7 +27,6 @@
     <script src="controllers/ProfileController.js"></script>
     <script src="controllers/LoginController.js"></script>
     <script src="controllers/NavbarController.js"></script>
-    <script src="controllers/RegisterController.js"></script>
     <script src="controllers/ArticleDetailsController.js"></script>
     <script src="controllers/RecipeDetailsController.js"></script>
     <script src="controllers/AdminController.js"></script>
@@ -32,7 +34,7 @@
 </head>
 <body ng-controller="NavbarController">
     <!-- Navigasi -->
-    <nav class="navbar navbar-expand-lg navbar-dark nav sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-dark nav sticky-top" >
         <div class="container-fluid">
             <a class="navbar-brand" href="#/">FitZone</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -56,6 +58,9 @@
                         <a class="nav-link" href="#/admin">Admin</a>
                     </li>
                     <li class="nav-item" ng-if="isLoggedIn">
+                        <a class="nav-link" href="#/bmi">BMI Calculator</a>
+                    </li>
+                    <li class="nav-item" ng-if="isLoggedIn">
                         <a class="nav-link" href="#/profile">Profile</a>
                     </li>
                     <li class="nav-item" ng-if="!isLoggedIn">
@@ -73,7 +78,110 @@
         <div ng-view></div>
     </div>
 
-    <footer></footer>
+<!-- Footer -->
+<footer class="text-center text-white py-1" ng-if="!isLoginOrRegisterPage()">
+    <!-- Grid container -->
+    <div class="container">
+    <!-- Section: Links -->
+    <section class="mt-2">
+        <!-- Grid row -->
+        <div class="row text-center d-flex justify-content-center pt-5">
+        <!-- Grid column -->
+        <div class="col-md-2">
+            <h6 class="text-uppercase font-weight-bold">
+            <a href="#!" class="text-white footer-link">Home</a>
+            </h6>
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-2">
+            <h6 class="text-uppercase font-weight-bold">
+            <a href="#!" class="text-white footer-link">Articles</a>
+            </h6>
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-2">
+            <h6 class="text-uppercase font-weight-bold">
+            <a href="#!" class="text-white footer-link">Healthy Food</a>
+            </h6>
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-2">
+            <h6 class="text-uppercase font-weight-bold">
+            <a href="#!" class="text-white footer-link">Workout</a>
+            </h6>
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-2">
+            <h6 class="text-uppercase font-weight-bold">
+            <a href="#!" class="text-white footer-link">BMI Calculator</a>
+            </h6>
+        </div>
+        <!-- Grid column -->
+        </div>
+        <!-- Grid row -->
+    </section>
+    <!-- Section: Links -->
+
+    <hr class="my-5" />
+
+    <!-- Section: Text -->
+    <section class="mb-5">
+        <div class="row d-flex justify-content-center">
+        <div class="col-lg-8">
+            <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt
+            distinctio earum repellat quaerat voluptatibus placeat nam,
+            commodi optio pariatur est quia magnam eum harum corrupti
+            dicta, aliquam sequi voluptate quas.
+            </p>
+        </div>
+        </div>
+    </section>
+    <!-- Section: Text -->
+
+    <!-- Section: Social -->
+    <section class="text-center mb-5">
+        <a href="" class="text-white me-4">
+        <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="" class="text-white me-4">
+        <i class="fab fa-twitter"></i>
+        </a>
+        <a href="" class="text-white me-4">
+        <i class="fab fa-google"></i>
+        </a>
+        <a href="" class="text-white me-4">
+        <i class="fab fa-instagram"></i>
+        </a>
+        <a href="" class="text-white me-4">
+        <i class="fab fa-linkedin"></i>
+        </a>
+        <a href="" class="text-white me-4">
+        <i class="fab fa-github"></i>
+        </a>
+    </section>
+    <!-- Section: Social -->
+
+
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+    © 2020 Copyright:
+    <a class="text-white" href="">FitZone.com</a>
+    </div>
+    <!-- Copyright -->
+</footer>
+<!-- Footer -->
+
+
+
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

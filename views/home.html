@@ -41,10 +41,15 @@
         </button>
     </div>
 
-    <section id="our-story" class="about-us-section py-5">
+    <section id="our-story" class="about-us-section py-1">
         <div class="container text-center">
-            <div class="row">
-                <div class="col-lg-6 col-md-12 mt-4 mt-lg-0">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-12">
+                    <img src="https://images.ctfassets.net/4f3rgqwzdznj/1Gq1h2vUaJ69xH2rU3VRqI/1f03b3177f2e3025ef0c85c68818af7f/three_woman_HIIT_workout-961254644.jpg" 
+                        alt="Embrace a Healthy Lifestyle" 
+                        class="img-fluid rounded shadow mb-4 mb-lg-0">
+                </div>
+                <div class="col-lg-6 col-md-12">
                     <h2 class="mb-4">Discover Our Mission</h2>
                     <p class="text-muted">
                         At <strong>FitZone</strong>, we are passionate about empowering individuals to embrace a healthier, stronger, and more fulfilling lifestyle. Through tailored workout plans, expert nutritional guidance, and a thriving community, we make wellness achievable and enjoyable for everyone.
@@ -54,26 +59,76 @@
                     </p>
                     <a href="#services" class="btn btn-primary mt-2 btn-custom">Explore Our Programs</a>
                 </div>
-                <div class="col-lg-6 col-md-12">
-                    <img src="https://images.ctfassets.net/4f3rgqwzdznj/1Gq1h2vUaJ69xH2rU3VRqI/1f03b3177f2e3025ef0c85c68818af7f/three_woman_HIIT_workout-961254644.jpg" alt="Embrace a Healthy Lifestyle" class="img-fluid rounded shadow">
-                </div>
             </div>
-            <div class="row g-4 mt-5 justify-content-center">
-                <div class="col-lg-3 col-md-6" ng-repeat="counter in counters">
-                    <div class="counter-box text-center">
-                        <h2 class="counter">{{counter.value}}</h2>
-                        <p>{{counter.label}}</p>
+        </div>
+    </section>
+
+    <section class="wellness-section">
+        <div class="container d-flex flex-column justify-content-center align-items-center h-100">
+            <div class="text-wrapper">
+                <h1 class="display-4 fw-bold">Explore Daily Workouts, Healthy Recipes, and Wellness Tips</h1>
+                <p class="lead mt-3">
+                    Temukan artikel kesehatan, panduan workout harian di rumah, dan berbagai resep makanan sehat untuk mendukung gaya hidup Anda yang lebih baik.
+                </p>
+                <a href="https://youtu.be/fLLScgWQcHc?si=2EN2lRcYMrD7WYbd" class="btn btn-outline-light btn-lg custom-btn mt-6">
+                    <i class="bi bi-play-circle"></i>
+                </a> 
+            </div>
+        </div>
+    </section>
+
+    <div class="row g-1 justify-content-center counter-stat">
+        <div class="col-lg-2 col-md-6 col-12" ng-repeat="counter in counters">
+            <div class="text-center py-4">
+                <h2 class="counter fw-bold">{{counter.value}}</h2>
+                <p class="text-uppercase text-secondary fw-semibold small">{{counter.label}}</p>
+            </div>
+        </div>
+    </div>
+
+    <section class="custom-section align-items-center">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-4">
+                    <h2 class="section-title">Your Body Transformation Begins Today!</h2>
+                    <p class="section-description">Mulai perjalanan transformasi tubuh Anda hari ini dengan jadwal workout harian dan berbagai resep makanan sehat yang mendukung kebugaran Anda.</p>
+                    <a href="#services" class="btn mt-2 btn-custom">Explore Our Programs</a>
+                </div>
+                <div class="col-md-4">
+                    <div class="image-wrapper text-center">
+                        <img src="https://willfitness.id/will-media/2023/10/mucsa.png" alt="Your Image" class="img-fluid">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Wellness Articles</h5>
+                                    <p class="card-text">Temukan artikel inspiratif tentang kesehatan mental dan tips hidup sehat..</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Healhy Food Recipe</h5>
+                                    <p class="card-text">Resep makanan sehat yang lezat dan bergizi untuk tubuh bugar.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Workout Routine</h5>
+                                    <p class="card-text">Rutinitas latihan harian untuk mencapai tubuh yang lebih sehat</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    
 
-    
-
-    
-    
-    
-    
