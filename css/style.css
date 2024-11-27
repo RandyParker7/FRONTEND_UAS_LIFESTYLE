@@ -3,7 +3,7 @@ html {
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: "Roboto Condensed", sans-serif;
 }
 
 .nav {
@@ -11,7 +11,6 @@ body {
     font-weight: bold;
     padding: 1rem 1.5rem; 
     font-size: 1.2rem; 
-    
 }
 
 .nav-link {
@@ -41,6 +40,9 @@ body {
 }
 
 /* Carousel */
+.carousel{
+    margin-bottom: 2rem;
+}
 .carousel-item {
     position: relative;
 }
@@ -79,9 +81,10 @@ body {
 
 /* About Setion */
 .about-us-section {
-    height: 100vh;
-    display: flex;
+    height: 80vh;
+    display: grid;
     align-items: center;
+    padding: 2rem;
 }
 
 .about-us-section h2 {
@@ -111,6 +114,140 @@ body {
     border: none;
 }
 
+
+/* Wellness Section */
+.wellness-section {
+    background: linear-gradient(to right, rgba(35, 35, 46, 0.8), rgba(0, 5, 82, 0.8)),
+                url('https://kainia.id/userfiles/uploads/beberapa-manfaat-workout-di-rumah.jpg') no-repeat center center/cover;
+    height: 80vh; 
+    color: white; 
+    text-align: center;
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.text-wrapper {
+    max-width: 500px;
+}
+
+.wellness-section h1 {
+    font-weight: bold;
+    font-size: 2.5rem; 
+}
+
+.wellness-section p {
+    margin-top: 1rem;
+    font-size: 1rem; 
+}
+
+.wellness-section a {
+    margin-top: 2rem;
+}
+
+/* counter Stat */
+.counter-stat .counter {
+    font-size: 2.5rem; 
+    color: #05324d; 
+    font-weight: bold;
+    margin: 0;
+}
+
+.counter-stat p {
+    margin: 0;
+    font-size: 0.9rem; 
+    font-weight: 600;
+    color: #555555; 
+    text-transform: uppercase; 
+    letter-spacing: 0.05em; 
+}
+
+.btn-custom {
+    background-color: #FF7043;
+}
+
+.btn-custom:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+/* Custom Section */
+.custom-section {
+    background-color: #f8f9fa; 
+}
+
+.image-wrapper {
+    text-align: center;
+}
+
+.section-title {
+    font-size: 3rem;
+    color: #333;
+    font-weight: bold;
+}
+
+.section-description {
+    font-size: 1.1rem;
+    color: #666;
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #555;
+}
+
+/* Footer*/
+footer {
+    background-color: #05324d;
+}
+
+.footer-link {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Workout */
+.header-container {
+    position: relative;
+    text-align: center;
+    color: white;
+    background: linear-gradient(to right, rgba(35, 35, 46, 0.8), rgba(0, 5, 82, 0.8)),
+    url('https://cdn.mos.cms.futurecdn.net/oYDbf5hQAePHEBNZTQMXRA-1200-80.jpg') no-repeat center center/cover;
+    background-size: cover;
+    background-position: center;
+    height: 300px;
+}
+
+.header-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(1px); 
+}
+
+.header-container h1 {
+    position: relative;
+    z-index: 1;
+    margin-top: 60px;
+    font-size: 3rem;
+    font-weight: bold;
+}
 
 @media (max-width: 768px) {
     .carousel-caption h5 {
