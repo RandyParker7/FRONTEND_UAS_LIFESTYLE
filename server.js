@@ -73,7 +73,7 @@ const RecipeComment = mongoose.model('RecipeComment', recipeCommentSchema);
     if (adminUser) {
       console.log('Admin user already exists.');
     } else {
-      const hashedPassword = await bcrypt.hash('adminpassword', 10);
+      const hashedPassword = await bcrypt.hash('123', 10);
       const newAdminUser = new User({
         username: 'admin',
         password: hashedPassword,
@@ -586,6 +586,41 @@ app.get('/api/comments', async (req, res) => {
   } catch (error) {
       console.error('Error fetching comments:', error);
       res.status(500).json({ error: 'Failed to fetch comments' });
+  }
+});
+
+app.get('/api/recipecomments', async (req, res) => {
+  try {
+    const comments = await RecipeComment.find();
+    if (!comments || comments.length === 0) {
+      return res.status(404).json({ message: 'No comments found.' });
+    }
+    res.status(200).json(comments);
+  } catch (error) {
+    res.status(500).json({ message: 'Error retrieving comments', error });
+  }
+});
+
+// Delete a recipe comment
+app.delete('/api/recipecomments/:id', async (req, res) => {
+  try {
+    const commentId = req.params.id;
+
+    // Validate ID format
+    if (!mongoose.Types.ObjectId.isValid(commentId)) {
+      return res.status(400).json({ message: 'Invalid ID format' });
+    }
+
+    // Attempt to delete comment
+    const deletedComment = await RecipeComment.findByIdAndDelete(commentId);
+    if (!deletedComment) {
+      return res.status(404).json({ message: 'Comment not found' });
+    }
+
+    res.json({ message: 'Comment deleted successfully' });
+  } catch (err) {
+    console.error('Error deleting comment:', err);
+    res.status(500).json({ message: 'Error deleting comment' });
   }
 });
 // Admin End //
