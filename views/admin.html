@@ -1,0 +1,71 @@
+<div class="container mt-4">
+    <h1>Admin Panel</h1>
+
+    <!-- Add New Article -->
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addArticleModal">
+        Add New Article
+    </button>
+
+    <!-- Articles Section -->
+    <h2>Articles</h2>
+    <div class="row">
+        <div class="col-md-4" ng-repeat="article in articles">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{ article.title }}</h5>
+                    <p class="card-text">{{ article.content | limitTo: 100 }}{{ article.content.length > 100 ? '...' : '' }}</p>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editArticleModal" ng-click="editArticle(article)">Edit</button>
+                    <button class="btn btn-danger" ng-click="deleteArticle(article._id)">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comments Section -->
+    <h2>Comments</h2>
+    <div ng-repeat="comment in comments" class="border p-3 mb-2">
+        <p>{{ comment.content }}</p>
+        <small>By {{ comment.author }} on {{ comment.createdAt | date:'short' }}</small>
+        <button class="btn btn-danger btn-sm" ng-click="deleteComment(comment._id)">Delete</button>
+    </div>
+
+    <!-- Modal for Adding New Article -->
+    <div class="modal fade" id="addArticleModal" tabindex="-1" aria-labelledby="addArticleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addArticleModalLabel">Add New Article</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control mb-3" placeholder="Title" ng-model="newArticle.title">
+                    <textarea class="form-control" placeholder="Content" ng-model="newArticle.content"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" ng-click="addArticle()">Add Article</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Article Modal -->
+    <div class="modal fade" id="editArticleModal" tabindex="-1" aria-hidden="true" ng-show="editingArticle">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Article</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control mb-3" placeholder="Title" ng-model="editingArticle.title">
+                    <textarea class="form-control" placeholder="Content" ng-model="editingArticle.content"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-warning" ng-click="updateArticle()">Update Article</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
