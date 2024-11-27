@@ -12,4 +12,8 @@ app.controller('NavbarController', function($scope, $location) {
             checkLoginStatus();
         }
     });
+
+    $scope.isLoginOrRegisterPage = function() {
+        return $location.path() === '/login' || $location.path() === '/register';
+    };
 });
