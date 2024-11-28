@@ -54,8 +54,8 @@ app.controller('AdminController', function($scope, $http) {
 
     // Update an article
     $scope.updateArticle = function() {
-        if (!$scope.editingArticle.title || !$scope.editingArticle.content) {
-            alert('Title and content cannot be empty!');
+        if (!$scope.editingArticle.title || !$scope.editingArticle.content || !$scope.editingArticle.category) {
+            alert('Title, content, and category cannot be empty!');
             return;
         }
     

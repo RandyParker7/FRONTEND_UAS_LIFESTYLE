@@ -257,23 +257,29 @@ app.delete('/api/articles/:id', (req, res) => {
 
 // Update an article by ID
 app.put('/api/articles/:id', async (req, res) => {
-    try {
-      const updatedArticle = await Article.findByIdAndUpdate(
-        req.params.id,
-        { title: req.body.title, content: req.body.content },
-        { new: true }
-      );
-  
-      if (!updatedArticle) {
-        return res.status(404).send('Article not found');
+  try {
+      const { title, content, category } = req.body;
+
+      if (!title || !content || !category) {
+          return res.status(400).send('Title, content, and category are required.');
       }
-  
+
+      const updatedArticle = await Article.findByIdAndUpdate(
+          req.params.id,
+          { title, content, category },
+          { new: true }
+      );
+
+      if (!updatedArticle) {
+          return res.status(404).send('Article not found');
+      }
+
       res.json(updatedArticle);
-    } catch (err) {
+  } catch (err) {
       console.error('Error updating article:', err);
       res.status(500).send('Error updating article');
-    }
-  });
+  }
+});
 
 // Get comments for an article
 app.get('/api/articles/:id/comments', async (req, res) => {
@@ -485,9 +491,15 @@ app.delete('/api/recipes/:id', (req, res) => {
 // Update a recipe by ID
 app.put('/api/recipes/:id', async (req, res) => {
   try {
+      const { title, content, category } = req.body;
+
+      if (!title || !content || !category) {
+          return res.status(400).send('Title, content, and category are required.');
+      }
+
       const updatedRecipe = await Recipe.findByIdAndUpdate(
-          req.params.id, 
-          req.body, // This will update all fields sent in the body
+          req.params.id,
+          { title, content, category },
           { new: true }
       );
 
