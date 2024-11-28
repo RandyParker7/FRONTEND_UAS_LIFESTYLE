@@ -26,8 +26,9 @@ mongoose.connect('mongodb://localhost:27017/uas-frontend', { useNewUrlParser: tr
 // Define Schema
 const articleSchema = new mongoose.Schema({
   title: String,
-  content: String
-});
+  content: String,
+  category: String,
+}, { timestamps: true });
 const workoutSchema = new mongoose.Schema({
   name: { type: String, required: true },
   duration: { type: String, required: true },
@@ -49,8 +50,9 @@ const commentSchema = new mongoose.Schema({
 });
 const recipeSchema = new mongoose.Schema({
   title: String,
-  content: String
-});
+  content: String,
+  category: String,
+}, { timestamps: true });
 const recipeCommentSchema = new mongoose.Schema({
   recipeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Recipe', required: true },
   author: { type: String, required: true },
@@ -181,14 +183,31 @@ const authenticateToken = (req, res, next) => {
 // Articles Start //
 // Get all articles
 app.get('/api/articles', (req, res) => {
-    Article.find({})
-      .then(articles => {
-        res.json(articles);
-      })
+  const { search, category, sortBy } = req.query;
+
+  let filter = {};
+  if (search) {
+      filter.title = { $regex: search, $options: 'i' };
+  }
+  if (category) {
+      filter.category = category;
+  }
+
+  let sort = {};
+  if (sortBy === 'newest') {
+      sort.createdAt = -1;
+  } else if (sortBy === 'oldest') {
+      sort.createdAt = 1;
+  }
+
+  Article.find(filter)
+      .sort(sort)
+      .then(articles => res.json(articles))
       .catch(err => {
-        res.status(500).send('Error retrieving articles');
+          console.error(err);
+          res.status(500).send('Error retrieving articles');
       });
-  });
+});
 
 // Get an article by ID
 app.get('/api/articles/:id', (req, res) => {
@@ -207,15 +226,20 @@ app.get('/api/articles/:id', (req, res) => {
 
 // Add a new article
 app.post('/api/articles', (req, res) => {
-    const newArticle = new Article(req.body);
-    newArticle.save()
-      .then(article => {
-        res.json(article);
-      })
+  const { title, content, category } = req.body;
+
+  if (!title || !content || !category) {
+      return res.status(400).send('Title, content, and category are required.');
+  }
+
+  const newArticle = new Article({ title, content, category });
+  newArticle.save()
+      .then(article => res.json(article))
       .catch(err => {
-        res.status(500).send('Error adding article');
+          console.error(err);
+          res.status(500).send('Error adding article');
       });
-  });
+});
 
 // Delete an article by ID
 app.delete('/api/articles/:id', (req, res) => {
@@ -384,13 +408,30 @@ app.delete('/api/workouts/:id', async (req, res) => {
 // Food Start //
 // Get all recipes
 app.get('/api/recipes', (req, res) => {
-  Recipe.find({})
-    .then(recipes => {
-      res.json(recipes);
-    })
-    .catch(err => {
-      res.status(500).send('Error retrieving recipes');
-    });
+  const { search, category, sortBy } = req.query;
+
+  let filter = {};
+  if (search) {
+      filter.title = { $regex: search, $options: 'i' };
+  }
+  if (category) {
+      filter.category = category;
+  }
+
+  let sort = {};
+  if (sortBy === 'newest') {
+      sort.createdAt = -1;
+  } else if (sortBy === 'oldest') {
+      sort.createdAt = 1;
+  }
+
+  Recipe.find(filter)
+      .sort(sort)
+      .then(recipes => res.json(recipes))
+      .catch(err => {
+          console.error(err);
+          res.status(500).send('Error retrieving recipes');
+      });
 });
 
 // Get a recipe by ID
@@ -409,13 +450,20 @@ app.get('/api/recipes/:id', (req, res) => {
 });
 
 // Add a new recipe
-app.post('/api/recipes', (req, res) => {
-  const newRecipe = new Recipe(req.body);
+app.post('/api/recipes', (req, res) => { 
+  const { title, content, category } = req.body;
+
+  if (!title || !content || !category) {
+    return res.status(400).send('Title, content, and category are required.');
+  }
+
+  const newRecipe = new Recipe({ title, content, category });
   newRecipe.save()
     .then(recipe => {
       res.status(201).json(recipe);
     })
     .catch(err => {
+      console.error(err);
       res.status(500).send('Error adding recipe');
     });
 });

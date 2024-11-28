@@ -1,6 +1,28 @@
 <div class="container mt-4">
     <h1>Recipes</h1>
 
+    <!-- Search and sort controls -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Search by Title" ng-model="searchQuery" ng-change="searchRecipes()">
+        </div>
+        <div class="col-md-4">
+            <select class="form-control" ng-model="selectedCategory" ng-change="searchRecipes()">
+                <option value="">All Categories</option>
+                <option value="Carb Conscious">Carb Conscious</option>
+                <option value="Protein Packed">Protein Packed</option>
+                <option value="Veggie Focused">Veggie Focused</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select class="form-control" ng-model="sortBy" ng-change="searchRecipes()">
+                <option value="">Sort By</option>
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+            </select>
+        </div>
+    </div>
+
     <!-- Display recipes as cards -->
     <div class="row">
         <div class="col-md-4" ng-repeat="recipe in recipes">
@@ -13,3 +35,4 @@
             </div>
         </div>
     </div>
+</div>

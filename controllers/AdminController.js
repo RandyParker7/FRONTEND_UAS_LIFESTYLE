@@ -29,11 +29,11 @@ app.controller('AdminController', function($scope, $http) {
 
     // Add a new article
     $scope.addArticle = function() {
-        if (!$scope.newArticle.title || !$scope.newArticle.content) {
-            alert('Title and content are required!');
+        if (!$scope.newArticle.title || !$scope.newArticle.content || !$scope.newArticle.category) {
+            alert('Title, content, and category are required!');
             return;
         }
-
+    
         $http.post(baseUrl, $scope.newArticle)
             .then(function(response) {
                 $scope.articles.push(response.data);
@@ -140,20 +140,21 @@ app.controller('AdminController', function($scope, $http) {
 
     // Add a new recipe
     $scope.addRecipe = function() {
-        if (!$scope.newRecipe.title || !$scope.newRecipe.content) {
-            alert('Title and content are required!');
+        if (!$scope.newRecipe.title || !$scope.newRecipe.content || !$scope.newRecipe.category) {
+            alert('Title, content, and category are required!');
             return;
         }
-
+    
         const newRecipe = {
             title: $scope.newRecipe.title,
-            content: $scope.newRecipe.content
+            content: $scope.newRecipe.content,
+            category: $scope.newRecipe.category,
         };
-
+    
         $http.post(baseUrl1, newRecipe)
             .then(function(response) {
                 $scope.getRecipes();
-                $scope.editingRecipe = {};
+                $scope.newRecipe = {};
                 $('#addRecipeModal').modal('hide');
                 alert('Recipe added successfully!');
             })
