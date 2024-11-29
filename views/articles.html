@@ -1,6 +1,28 @@
 <div class="container mt-4">
     <h1>Articles</h1>
 
+    <!-- Search, Category, Sort -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Search by Title" ng-model="searchQuery" ng-change="searchArticles()">
+        </div>
+        <div class="col-md-4">
+            <select class="form-control" ng-model="selectedCategory" ng-change="searchArticles()">
+                <option value="">All Categories</option>
+                <option value="Food">Food</option>
+                <option value="Fitness">Fitness</option>
+                <option value="Health">Health</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select class="form-control" ng-model="sortBy" ng-change="searchArticles()">
+                <option value="">Sort By</option>
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+            </select>
+        </div>
+    </div>
+
     <!-- Display articles as cards -->
     <div class="row">
         <div class="col-md-4" ng-repeat="article in articles">
