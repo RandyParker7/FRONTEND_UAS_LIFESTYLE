@@ -3,10 +3,19 @@ app.controller('FoodController', function($scope, $http) {
     const baseUrl = 'http://localhost:3000/api/recipes';
     
     $scope.recipes = [];
+    $scope.searchQuery = '';
+    $scope.selectedCategory = '';
+    $scope.sortBy = '';
 
-    // Fetch all recipes from the server
-    $scope.getRecipes = function() {
-        $http.get(baseUrl)
+    // Fetch recipes
+    $scope.searchRecipes = function() {
+        const params = {
+            search: $scope.searchQuery,
+            category: $scope.selectedCategory,
+            sortBy: $scope.sortBy,
+        };
+
+        $http.get(baseUrl, { params })
             .then(function(response) {
                 $scope.recipes = response.data;
             })
@@ -15,36 +24,6 @@ app.controller('FoodController', function($scope, $http) {
             });
     };
 
-    // Add a new recipe
-    $scope.addRecipe = function() {
-        if (!$scope.newRecipeTitle || !$scope.newRecipeContent) {
-            alert('Title and content are required!');
-            return;
-        }
-    
-        const newRecipe = {
-            title: $scope.newRecipeTitle,
-            content: $scope.newRecipeContent
-        };
-    
-        $http.post(baseUrl, newRecipe)
-            .then(function(response) {
-                $scope.getRecipes();
-    
-                $scope.newRecipeTitle = '';
-                $scope.newRecipeContent = '';
-    
-                $('#addRecipeModal').modal('hide');
-    
-                alert('Recipe added successfully!');
-            })
-            .catch(function(error) {
-                console.error('Error adding recipe:', error);
-    
-                alert('Failed to add recipe. Please try again.');
-            });
-    };
-
     // Load recipes when the controller is initialized
-    $scope.getRecipes();
+    $scope.searchRecipes();
 });
