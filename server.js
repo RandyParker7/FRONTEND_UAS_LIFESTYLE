@@ -223,6 +223,35 @@ app.post('/api/changePassword', async (req, res) => {
       res.status(500).json({ message: 'Terjadi kesalahan saat mengubah password.' });
   }
 });
+
+// Forgot Password endpoint
+app.post('/api/forgot-password', async (req, res) => {
+  const { username, email, newPassword } = req.body;
+
+  if (!username || !email || !newPassword) {
+    return res.status(400).json({ message: 'Username, email, and new password are required' });
+  }
+
+  try {
+    // Find user with matching username and email
+    const user = await User.findOne({ username, email });
+    if (!user) {
+      return res.status(404).json({ message: 'Invalid username or email' });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update the user's password
+    user.password = hashedPassword;
+    await user.save();
+
+    res.json({ message: 'Password updated successfully' });
+  } catch (err) {
+    console.error('Error during password reset:', err);
+    res.status(500).json({ message: 'Error during password reset' });
+  }
+});
 // Login Register End //
 
 // Middleware to verify JWT token and extract user info
