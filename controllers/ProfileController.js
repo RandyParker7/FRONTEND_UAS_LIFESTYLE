@@ -72,4 +72,58 @@ app.controller('ProfileController', function($scope, $http, $location) {
         $scope.errorMessage = 'You have successfully logged out.';
         $location.path('/');
     };
+
+    $scope.deleteAccount = function() {
+        if (!confirm("Apakah Anda yakin ingin menghapus akun Anda? Tindakan ini tidak dapat dibatalkan!")) {
+            return;
+        }
+    
+        const token = localStorage.getItem('authToken');
+        const headers = { 'Authorization': 'Bearer ' + token };
+    
+        $http.delete('http://localhost:3000/api/deleteAccount', { headers: headers })
+            .then(function(response) {
+                alert('Akun berhasil dihapus. Anda akan dialihkan ke halaman utama.');
+                localStorage.removeItem('authToken'); // Hapus token setelah akun dihapus
+                $location.path('/'); // Redirect ke halaman utama
+            })
+            .catch(function(error) {
+                console.error('Error deleting account:', error);
+                $scope.errorMessage = 'Terjadi kesalahan saat menghapus akun. Silakan coba lagi.';
+            });
+    };
+
+    $scope.showChangePasswordForm = false;
+
+    $scope.toggleChangePasswordForm = function() {
+        $scope.showChangePasswordForm = !$scope.showChangePasswordForm;
+        $scope.oldPassword = '';
+        $scope.newPassword = '';
+        $scope.confirmNewPassword = '';
+    };
+
+    $scope.changePassword = function() {
+        if ($scope.newPassword !== $scope.confirmNewPassword) {
+            $scope.errorMessage = 'Password baru dan konfirmasi tidak cocok.';
+            return;
+        }
+
+        const token = localStorage.getItem('authToken');
+        const headers = { 'Authorization': 'Bearer ' + token };
+
+        const payload = {
+            oldPassword: $scope.oldPassword,
+            newPassword: $scope.newPassword
+        };
+
+        $http.post('http://localhost:3000/api/changePassword', payload, { headers: headers })
+            .then(function(response) {
+                alert('Password berhasil diubah.');
+                $scope.toggleChangePasswordForm();
+            })
+            .catch(function(error) {
+                console.error('Error changing password:', error);
+                $scope.errorMessage = error.data.message || 'Terjadi kesalahan saat mengubah password.';
+            });
+    };
 });
