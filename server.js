@@ -160,6 +160,69 @@ app.post('/api/register', async (req, res) => {
     res.status(500).json({ message: 'Error registering user' });
   }
 });
+
+// Hapus account
+app.delete('/api/deleteAccount', async (req, res) => {
+  const token = req.headers.authorization?.split(' ')[1];
+
+  if (!token) {
+      return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  try {
+      const decoded = jwt.verify(token, SECRET_KEY);
+      const userId = decoded.id;
+
+      // Hapus akun dari database
+      const result = await User.deleteOne({ _id: userId });
+      
+      if (result.deletedCount === 0) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+
+      res.json({ message: 'Akun berhasil dihapus' });
+  } catch (err) {
+      console.error('Error deleting account:', err);
+      res.status(500).json({ message: 'Terjadi kesalahan saat menghapus akun' });
+  }
+});
+
+// Ubah password
+app.post('/api/changePassword', async (req, res) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  const { oldPassword, newPassword } = req.body;
+
+  if (!token || !oldPassword || !newPassword) {
+      return res.status(400).json({ message: 'Semua data diperlukan.' });
+  }
+
+  try {
+      const decoded = jwt.verify(token, SECRET_KEY);
+      const userId = decoded.id;
+
+      // Temukan pengguna berdasarkan ID
+      const user = await User.findById(userId);
+      if (!user) {
+          return res.status(404).json({ message: 'Pengguna tidak ditemukan.' });
+      }
+
+      // Verifikasi password lama
+      const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+      if (!isPasswordValid) {
+          return res.status(401).json({ message: 'Password lama salah.' });
+      }
+
+      // Hash password baru dan simpan
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      user.password = hashedPassword;
+      await user.save();
+
+      res.json({ message: 'Password berhasil diubah.' });
+  } catch (err) {
+      console.error('Error changing password:', err);
+      res.status(500).json({ message: 'Terjadi kesalahan saat mengubah password.' });
+  }
+});
 // Login Register End //
 
 // Middleware to verify JWT token and extract user info
