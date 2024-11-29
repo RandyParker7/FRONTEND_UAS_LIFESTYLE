@@ -1,6 +1,7 @@
+<div class="header-articles py-4">
+    <h1>Article & Latest News</h1>
+</div>
 <div class="container mt-4">
-    <h1>Articles</h1>
-
     <!-- Search, Category, Sort -->
     <div class="row mb-4">
         <div class="col-md-4">
@@ -23,15 +24,57 @@
         </div>
     </div>
 
-    <!-- Display articles as cards -->
-    <div class="row">
-        <div class="col-md-4" ng-repeat="article in articles">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">{{ article.title }}</h5>
-                    <p class="card-text">{{ article.content | limitTo: 100 }}{{ article.content.length > 100 ? '...' : '' }}</p>
-                    <a class="btn btn-info" ng-href="#/article/{{ article._id }}">Read More</a>
-                </div>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-4" ng-repeat="article in articles">
+                <article>
+                    <div class="card border-0">
+                        <!-- Image Section -->
+                        <figure class="card-img-top m-0 overflow-hidden">
+                            <a ng-href="#/article/{{ article._id }}">
+                                <img class="img-fluid" src="{{ article.imageUrl }}" alt="{{ article.title }}">
+                            </a>
+                            <figcaption class="overlay">
+                                <h4 class="text-white">Read More</h4>
+                            </figcaption>
+                        </figure>
+
+                        <!-- Card Body -->
+                        <div class="card-body border bg-white p-4">
+                            <!-- Article Header with Category -->
+                            <div class="entry-header mb-3">
+                                <ul class="entry-meta list-unstyled d-flex mb-2">
+                                    <li>
+                                        <a class="link-primary text-decoration-none" ng-href="#/category/{{ article.category }}">{{ article.category }}</a>
+                                    </li>
+                                </ul>
+                                <h2 class="card-title entry-title h4 mb-0">
+                                    <a class="link-dark text-decoration-none" ng-href="#/article/{{ article._id }}">{{ article.title }}</a>
+                                </h2>
+                            </div>
+                            <!-- Article Content Preview -->
+                            <p class="card-text entry-summary text-secondary mb-3">
+                                {{ article.content | limitTo: 100 }}{{ article.content.length > 100 ? '...' : '' }}
+                            </p>
+                            <a ng-href="#/article/{{ article._id }}" class="btn btn-primary">Read More</a>
+                        </div>
+
+                        <!-- Footer with Date -->
+                        <div class="card-footer border border-top-0 bg-light p-4">
+                            <ul class="entry-meta list-unstyled d-flex align-items-center m-0">
+                                <li>
+                                    <a class="fs-7 link-secondary text-decoration-none d-flex align-items-center" href="#!">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-calendar3" viewBox="0 0 16 16">
+                                            <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z" />
+                                            <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+                                        </svg>
+                                        <span class="ms-2 fs-7">{{ article.updatedAt | date:'d MMMM y' }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
             </div>
         </div>
     </div>
