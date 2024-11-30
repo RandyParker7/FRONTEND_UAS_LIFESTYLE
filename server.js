@@ -28,6 +28,7 @@ const articleSchema = new mongoose.Schema({
   title: String,
   content: String,
   category: String,
+  image: String,
 }, { timestamps: true });
 const workoutSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -52,6 +53,7 @@ const recipeSchema = new mongoose.Schema({
   title: String,
   content: String,
   category: String,
+  image: String,
 }, { timestamps: true });
 const recipeCommentSchema = new mongoose.Schema({
   recipeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Recipe', required: true },
@@ -317,13 +319,13 @@ app.get('/api/articles/:id', (req, res) => {
 
 // Add a new article
 app.post('/api/articles', (req, res) => {
-  const { title, content, category } = req.body;
+  const { title, content, category, image } = req.body;
 
   if (!title || !content || !category) {
       return res.status(400).send('Title, content, and category are required.');
   }
 
-  const newArticle = new Article({ title, content, category });
+  const newArticle = new Article({ title, content, category, image });
   newArticle.save()
       .then(article => res.json(article))
       .catch(err => {
@@ -548,13 +550,13 @@ app.get('/api/recipes/:id', (req, res) => {
 
 // Add a new recipe
 app.post('/api/recipes', (req, res) => { 
-  const { title, content, category } = req.body;
+  const { title, content, category, image } = req.body;
 
   if (!title || !content || !category) {
     return res.status(400).send('Title, content, and category are required.');
   }
 
-  const newRecipe = new Recipe({ title, content, category });
+  const newRecipe = new Recipe({ title, content, category, image });
   newRecipe.save()
     .then(recipe => {
       res.status(201).json(recipe);
