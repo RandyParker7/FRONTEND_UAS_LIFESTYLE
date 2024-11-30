@@ -731,6 +731,20 @@ app.get('/api/profileImage', authenticateToken, async (req, res) => {
 // Profile End //
 
 // Admin Start //
+app.get('/api/auth/user', authenticateToken, (req, res) => {
+  if (req.user) {
+      res.json({
+          isAuthenticated: true,
+          user: {
+              id: req.user.id,
+              username: req.user.username,
+              isAdmin: req.user.isAdmin,
+          },
+      });
+  } else {
+      res.json({ isAuthenticated: false });
+  }
+});
 // Fetch all comments
 app.get('/api/comments', async (req, res) => {
   try {
