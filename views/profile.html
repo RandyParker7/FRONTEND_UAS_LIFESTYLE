@@ -1,172 +1,171 @@
-<div>
-    <style>
-        body,
-        html {
-            height: 100%;
-            margin: 0;
-            font-family: 'Times new roman', sans-serif;
-        }
+<style>
+    body,
+    html {
+        height: 100%;
+        margin: 0;
+        font-family: 'Times new roman', sans-serif;
+    }
 
-        .profilepage {
-            background-image: url('https://png.pngtree.com/background/20230516/original/pngtree-large-room-full-of-equipment-in-a-gym-picture-image_2611111.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
+    .profilepage {
+        background-image: url('https://png.pngtree.com/background/20230516/original/pngtree-large-room-full-of-equipment-in-a-gym-picture-image_2611111.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+    }
 
-        .profile-overlay {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            width: 90%;
-            max-width: 500px;
-        }
+    .profile-overlay {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        width: 90%;
+        max-width: 500px;
+    }
 
-        .profile-header {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            color: white;
-            text-align: center;
-            padding: 20px;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-            margin-bottom: 20px;
-        }
+    .profile-header {
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        color: white;
+        text-align: center;
+        padding: 20px;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        margin-bottom: 20px;
+    }
 
-        .profile-image-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
+    .profile-image-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
 
-        .profile-image {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid white;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease;
-        }
+    .profile-image {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid white;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease;
+    }
 
-        .profile-image:hover {
-            transform: scale(1.1);
-        }
+    .profile-image:hover {
+        transform: scale(1.1);
+    }
 
-        .profile-details {
-            text-align: center;
-        }
+    .profile-details {
+        text-align: center;
+    }
 
-        .profile-actions {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-        }
+    .profile-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
 
-        .profile-action-btn {
-            flex-grow: 1;
-            padding: 10px;
-            text-align: center;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
+    .profile-action-btn {
+        flex-grow: 1;
+        padding: 10px;
+        text-align: center;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
 
-        .logout-btn {
-            background: linear-gradient(to right, #ff416c, #ff4b2b);
-            color: white;
-        }
+    .logout-btn {
+        background: linear-gradient(to right, #ff416c, #ff4b2b);
+        color: white;
+    }
 
-        .logout-btn:hover {
-            transform: scale(1.05);
-        }
+    .logout-btn:hover {
+        transform: scale(1.05);
+    }
 
-        .btn-primary {
-            background: #2575fc;
-            color: white;
-        }
+    .btn-primary {
+        background: #2575fc;
+        color: white;
+    }
 
-        .btn-primary:hover {
-            background: #6a11cb;
-        }
+    .btn-primary:hover {
+        background: #6a11cb;
+    }
 
-        .alert {
-            margin-top: 15px;
-        }
+    .alert {
+        margin-top: 15px;
+    }
 
-        .progress-indicator {
-            display: none;
-            margin-top: 10px;
-            text-align: center;
-            color: #6a11cb;
-        }
+    .progress-indicator {
+        display: none;
+        margin-top: 10px;
+        text-align: center;
+        color: #6a11cb;
+    }
 
-        .progress-indicator.show {
-            display: block;
-        }
+    .progress-indicator.show {
+        display: block;
+    }
 
-        .profile-status {
-            text-align: center;
-            margin-bottom: 20px;
-            padding: 10px;
-            background: rgba(37, 117, 252, 0.1);
-            border-radius: 8px;
-        }
+    .profile-status {
+        text-align: center;
+        margin-bottom: 20px;
+        padding: 10px;
+        background: rgba(37, 117, 252, 0.1);
+        border-radius: 8px;
+    }
 
-        .profile-status-text {
-            color: #6a11cb;
-            font-weight: 600;
-            margin: 0;
-        }
+    .profile-status-text {
+        color: #6a11cb;
+        font-weight: 600;
+        margin: 0;
+    }
 
-        .profile-status-edit {
-            color: #2575fc;
-            cursor: pointer;
-            margin-top: 5px;
-            font-size: 0.9rem;
-            transition: color 0.3s ease;
-        }
+    .profile-status-edit {
+        color: #2575fc;
+        cursor: pointer;
+        margin-top: 5px;
+        font-size: 0.9rem;
+        transition: color 0.3s ease;
+    }
 
-        .profile-status-edit:hover {
-            color: #6a11cb;
-            text-decoration: underline;
-        }
+    .profile-status-edit:hover {
+        color: #6a11cb;
+        text-decoration: underline;
+    }
 
-        .status-edit-input {
-            width: 100%;
-            padding: 8px;
-            margin-top: 10px;
-            border: 1px solid #2575fc;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
+    .status-edit-input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 10px;
+        border: 1px solid #2575fc;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
 
-        .status-edit-input:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.2);
-        }
+    .status-edit-input:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.2);
+    }
 
-        .status-edit-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
+    .status-edit-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
 
-        .status-edit-buttons .btn {
-            flex-grow: 1;
-            margin: 0 5px;
-            padding: 8px;
-            font-size: 0.9rem;
-        }
-    </style>
-</div>
+    .status-edit-buttons .btn {
+        flex-grow: 1;
+        margin: 0 5px;
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+</style>
+
 <div class="container mt-5 profilepage">
     <div ng-if="user" class="profile-overlay">
         <div class="profile-header">
@@ -196,6 +195,12 @@
             <button class="btn logout-btn profile-action-btn" ng-click="logout()">
                 Logout
             </button>
+            <button class="btn btn-danger profile-action-btn" ng-click="deleteAccount()">
+                Hapus Akun
+            </button>
+            <button class="btn btn-warning profile-action-btn" ng-click="toggleChangePasswordForm()">
+                Ubah Password
+            </button>
         </div>
         <div class="progress-indicator" ng-class="{'show': isUploading}">
             Uploading... Please wait.
@@ -205,6 +210,40 @@
         </div>
         <div ng-if="errorMessage" class="alert alert-danger">
             {{ errorMessage }}
+        </div>
+    </div>
+</div>
+
+<!-- Modal Ubah Password -->
+<div class="modal" tabindex="-1" role="dialog" ng-show="showChangePasswordForm" ng-class="{'show': showChangePasswordForm}" style="display: block;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ubah Password</h5>
+                <button type="button" class="close" ng-click="toggleChangePasswordForm()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form ng-submit="changePassword()">
+                    <div>
+                        <label>Password Lama:</label>
+                        <input type="password" ng-model="oldPassword" required class="form-control"/>
+                    </div>
+                    <div>
+                        <label>Password Baru:</label>
+                        <input type="password" ng-model="newPassword" required class="form-control"/>
+                    </div>
+                    <div>
+                        <label>Konfirmasi Password Baru:</label>
+                        <input type="password" ng-model="confirmNewPassword" required class="form-control"/>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" ng-click="changePassword()">Simpan Password</button>
+                <button type="button" class="btn btn-secondary" ng-click="toggleChangePasswordForm()">Batal</button>
+            </div>
         </div>
     </div>
 </div>
