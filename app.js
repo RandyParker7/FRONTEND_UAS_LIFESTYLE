@@ -70,6 +70,12 @@ app.config(function($routeProvider, $locationProvider) {
     $locationProvider.hashPrefix('');
 });
 
+app.run(function($rootScope, $window) {
+    $rootScope.$on('$routeChangeSuccess', function() {
+        $window.scrollTo(0, 0);  
+    });
+});
+
 app.directive('fileModel', ['$parse', function($parse) {
     return {
         restrict: 'A',

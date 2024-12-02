@@ -30,7 +30,7 @@ app.controller('HomeController', function($scope, $timeout) {
             $scope.updateCounter(counter); 
         });
     }, 500); 
+    
 });
 
 
-console.log(counter);  
