@@ -28,23 +28,36 @@ app.controller('AdminController', function($scope, $http) {
     };
 
     // Add a new article
-    $scope.addArticle = function() {
+    $scope.addArticle = function () {
         if (!$scope.newArticle.title || !$scope.newArticle.content || !$scope.newArticle.category) {
             alert('Title, content, and category are required!');
             return;
         }
     
-        $http.post(baseUrl, $scope.newArticle)
-            .then(function(response) {
-                $scope.articles.push(response.data);
-                $scope.newArticle = {}; // Clear form
-                $('#addArticleModal').modal('hide');
-                alert('Article added successfully!');
-            })
-            .catch(function(error) {
-                console.error('Error adding article:', error);
-                alert('Failed to add article.');
-            });
+        if ($scope.newArticle.imageFile) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                $scope.newArticle.image = e.target.result;
+                saveArticle();
+            };
+            reader.readAsDataURL($scope.newArticle.imageFile);
+        } else {
+            saveArticle();
+        }
+    
+        function saveArticle() {
+            $http.post(baseUrl, $scope.newArticle)
+                .then(function (response) {
+                    $scope.articles.push(response.data);
+                    $scope.newArticle = {};
+                    $('#addArticleModal').modal('hide');
+                    alert('Article added successfully!');
+                })
+                .catch(function (error) {
+                    console.error('Error adding article:', error);
+                    alert('Failed to add article.');
+                });
+        }
     };
 
     // Edit an article
@@ -144,24 +157,31 @@ app.controller('AdminController', function($scope, $http) {
             alert('Title, content, and category are required!');
             return;
         }
-    
-        const newRecipe = {
-            title: $scope.newRecipe.title,
-            content: $scope.newRecipe.content,
-            category: $scope.newRecipe.category,
-        };
-    
-        $http.post(baseUrl1, newRecipe)
-            .then(function(response) {
-                $scope.getRecipes();
-                $scope.newRecipe = {};
-                $('#addRecipeModal').modal('hide');
-                alert('Recipe added successfully!');
-            })
-            .catch(function(error) {
-                console.error('Error adding recipe:', error);
-                alert('Failed to add recipe. Please try again.');
-            });
+
+        if ($scope.newRecipe.imageFile) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                $scope.newRecipe.image = e.target.result;
+                saveRecipe();
+            };
+            reader.readAsDataURL($scope.newRecipe.imageFile);
+        } else {
+            saveRecipe();
+        }
+
+        function saveRecipe() {
+            $http.post(baseUrl1, $scope.newRecipe)
+                .then(function (response) {
+                    $scope.recipes.push(response.data);
+                    $scope.newRecipe = {};
+                    $('#addRecipeModal').modal('hide');
+                    alert('Recipe added successfully!');
+                })
+                .catch(function (error) {
+                    console.error('Error adding recipe:', error);
+                    alert('Failed to add recipe.');
+                });
+        }
     };
 
     // Edit a recipe
