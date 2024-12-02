@@ -1,6 +1,7 @@
 <div class="header-articles py-4">
     <h1>Article & Latest News</h1>
 </div>
+
 <div class="container mt-4">
     <!-- Search, Category, Sort -->
     <div class="row mb-4">
@@ -30,9 +31,11 @@
                 <article>
                     <div class="card border-0">
                         <!-- Image Section -->
-                        <figure class="card-img-top m-0 overflow-hidden">
+                        <figure class="card-img-top m-0 overflow-hidden" style="height: 150px;">
                             <a ng-href="#/article/{{ article._id }}">
-                                <img ng-src="{{ article.image }}" alt="{{ article.title }}" class="img-fluid mb-3 fixed-image" ng-if="article.image">
+                                <img ng-src="{{ article.image }}" alt="{{ article.title }}" class="img-fluid mb-3 fixed-image" ng-if="article.image" style="object-fit: cover">
+
+                                <div ng-if="!article.image" style="height: 100%; background-color: #e0e0e0;"></div>
                             </a>
                         </figure>
 
