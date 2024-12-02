@@ -214,35 +214,35 @@
     </div>
 </div>
 
-<!-- Modal Ubah Password -->
-<div class="modal" tabindex="-1" role="dialog" ng-show="showChangePasswordForm" ng-class="{'show': showChangePasswordForm}" style="display: block;">
-    <div class="modal-dialog" role="document">
+<!-- Modal for changing password -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true" ng-show="showChangePasswordForm" ng-class="{'show': showChangePasswordForm}">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Ubah Password</h5>
-                <button type="button" class="close" ng-click="toggleChangePasswordForm()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title" id="changePasswordModalLabel">Ubah Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ng-click="toggleChangePasswordForm()"></button>
             </div>
             <div class="modal-body">
                 <form ng-submit="changePassword()">
-                    <div>
-                        <label>Password Lama:</label>
-                        <input type="password" ng-model="oldPassword" required class="form-control"/>
+                    <div class="mb-3">
+                        <label for="oldPassword" class="form-label">Password Lama:</label>
+                        <input type="password" id="oldPassword" ng-model="oldPassword" required class="form-control"/>
                     </div>
-                    <div>
-                        <label>Password Baru:</label>
-                        <input type="password" ng-model="newPassword" required class="form-control"/>
+                    <div class="mb-3">
+                        <label for="newPassword" class="form-label">Password Baru:</label>
+                        <input type="password" id="newPassword" ng-model="newPassword" required class="form-control"/>
                     </div>
-                    <div>
-                        <label>Konfirmasi Password Baru:</label>
-                        <input type="password" ng-model="confirmNewPassword" required class="form-control"/>
+                    <div class="mb-3">
+                        <label for="confirmNewPassword" class="form-label">Konfirmasi Password Baru:</label>
+                        <input type="password" id="confirmNewPassword" ng-model="confirmNewPassword" required class="form-control"/>
                     </div>
+                    <!-- Show error message if passwords don't match -->
+                    <div ng-if="errorMessage" class="text-danger mb-3">{{errorMessage}}</div>
                 </form>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" ng-click="toggleChangePasswordForm()">Batal</button>
                 <button type="submit" class="btn btn-primary" ng-click="changePassword()">Simpan Password</button>
-                <button type="button" class="btn btn-secondary" ng-click="toggleChangePasswordForm()">Batal</button>
             </div>
         </div>
     </div>

@@ -96,30 +96,43 @@ app.controller('ProfileController', function($scope, $http, $location) {
     $scope.showChangePasswordForm = false;
 
     $scope.toggleChangePasswordForm = function() {
+        // Toggle the modal visibility
         $scope.showChangePasswordForm = !$scope.showChangePasswordForm;
+    
+        // Reset form fields
         $scope.oldPassword = '';
         $scope.newPassword = '';
         $scope.confirmNewPassword = '';
+        $scope.errorMessage = '';  // Reset error message
+    
+        // Bootstrap Modal control: show or hide modal based on $scope.showChangePasswordForm
+        if ($scope.showChangePasswordForm) {
+            // Use jQuery to manually trigger the modal if it's being shown
+            $('#changePasswordModal').modal('show');
+        } else {
+            // Close modal if it's being hidden
+            $('#changePasswordModal').modal('hide');
+        }
     };
-
+    
     $scope.changePassword = function() {
         if ($scope.newPassword !== $scope.confirmNewPassword) {
             $scope.errorMessage = 'Password baru dan konfirmasi tidak cocok.';
             return;
         }
-
+    
         const token = localStorage.getItem('authToken');
         const headers = { 'Authorization': 'Bearer ' + token };
-
+    
         const payload = {
             oldPassword: $scope.oldPassword,
             newPassword: $scope.newPassword
         };
-
+    
         $http.post('http://localhost:3000/api/changePassword', payload, { headers: headers })
             .then(function(response) {
                 alert('Password berhasil diubah.');
-                $scope.toggleChangePasswordForm();
+                $scope.toggleChangePasswordForm();  // Close the modal after success
             })
             .catch(function(error) {
                 console.error('Error changing password:', error);
