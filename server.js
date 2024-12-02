@@ -28,6 +28,7 @@ const articleSchema = new mongoose.Schema({
   title: String,
   content: String,
   category: String,
+  image: String,
 }, { timestamps: true });
 const workoutSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -52,6 +53,7 @@ const recipeSchema = new mongoose.Schema({
   title: String,
   content: String,
   category: String,
+  image: String,
 }, { timestamps: true });
 const recipeCommentSchema = new mongoose.Schema({
   recipeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Recipe', required: true },
@@ -223,6 +225,35 @@ app.post('/api/changePassword', async (req, res) => {
       res.status(500).json({ message: 'Terjadi kesalahan saat mengubah password.' });
   }
 });
+
+// Forgot Password endpoint
+app.post('/api/forgot-password', async (req, res) => {
+  const { username, email, newPassword } = req.body;
+
+  if (!username || !email || !newPassword) {
+    return res.status(400).json({ message: 'Username, email, and new password are required' });
+  }
+
+  try {
+    // Find user with matching username and email
+    const user = await User.findOne({ username, email });
+    if (!user) {
+      return res.status(404).json({ message: 'Invalid username or email' });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update the user's password
+    user.password = hashedPassword;
+    await user.save();
+
+    res.json({ message: 'Password updated successfully' });
+  } catch (err) {
+    console.error('Error during password reset:', err);
+    res.status(500).json({ message: 'Error during password reset' });
+  }
+});
 // Login Register End //
 
 // Middleware to verify JWT token and extract user info
@@ -288,13 +319,13 @@ app.get('/api/articles/:id', (req, res) => {
 
 // Add a new article
 app.post('/api/articles', (req, res) => {
-  const { title, content, category } = req.body;
+  const { title, content, category, image } = req.body;
 
   if (!title || !content || !category) {
       return res.status(400).send('Title, content, and category are required.');
   }
 
-  const newArticle = new Article({ title, content, category });
+  const newArticle = new Article({ title, content, category, image });
   newArticle.save()
       .then(article => res.json(article))
       .catch(err => {
@@ -519,13 +550,13 @@ app.get('/api/recipes/:id', (req, res) => {
 
 // Add a new recipe
 app.post('/api/recipes', (req, res) => { 
-  const { title, content, category } = req.body;
+  const { title, content, category, image } = req.body;
 
   if (!title || !content || !category) {
     return res.status(400).send('Title, content, and category are required.');
   }
 
-  const newRecipe = new Recipe({ title, content, category });
+  const newRecipe = new Recipe({ title, content, category, image });
   newRecipe.save()
     .then(recipe => {
       res.status(201).json(recipe);
@@ -700,6 +731,20 @@ app.get('/api/profileImage', authenticateToken, async (req, res) => {
 // Profile End //
 
 // Admin Start //
+app.get('/api/auth/user', authenticateToken, (req, res) => {
+  if (req.user) {
+      res.json({
+          isAuthenticated: true,
+          user: {
+              id: req.user.id,
+              username: req.user.username,
+              isAdmin: req.user.isAdmin,
+          },
+      });
+  } else {
+      res.json({ isAuthenticated: false });
+  }
+});
 // Fetch all comments
 app.get('/api/comments', async (req, res) => {
   try {

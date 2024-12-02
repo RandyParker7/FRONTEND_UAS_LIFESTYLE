@@ -1,6 +1,18 @@
 app.controller('NavbarController', function($scope, $location) {
     function checkLoginStatus() {
-        $scope.isLoggedIn = !!localStorage.getItem('authToken');
+        const authToken = localStorage.getItem('authToken');
+        $scope.isLoggedIn = !!authToken;
+        
+        if ($scope.isLoggedIn) {
+            try {
+                const tokenPayload = JSON.parse(atob(authToken.split('.')[1]));
+                $scope.isAdmin = tokenPayload.isAdmin || false;
+            } catch (e) {
+                $scope.isAdmin = false;
+            }
+        } else {
+            $scope.isAdmin = false;
+        }
     }
 
     checkLoginStatus();
