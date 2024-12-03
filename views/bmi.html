@@ -1,1 +1,123 @@
-<p>bmi page</p>
+<div class="container py-5">
+    <!-- Header Section -->
+    <div class="header-bmi text-center mb-4">
+        <h1 class="display-5 fw-bold text-primary">BMI Calculator</h1>
+        <p class="text-muted">Calculate your Body Mass Index (BMI) and see the category.</p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-body">
+                    <!-- Input Section -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label for="weight" class="form-label fw-semibold">Weight (kg)</label>
+                            <div class="input-group">
+                                <input type="range" id="weight" class="form-range" 
+                                       min="30" max="150" ng-model="weight">
+                                <span class="input-group-text">{{ weight }} kg</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="height" class="form-label fw-semibold">Height (cm)</label>
+                            <input type="number" id="height" class="form-control" 
+                                   placeholder="Enter height" ng-model="height" required>
+                        </div>
+                    </div>
+
+                    <!-- Calculate Button -->
+                    <div class="d-grid">
+                        <button class="btn btn-primary fw-bold" ng-click="calculateBMI()">
+                            Calculate BMI
+                        </button>
+                    </div>
+
+                    <!-- Result Section -->
+                    <div ng-show="bmiResult" class="mt-4 text-center">
+                        <div class="alert alert-info shadow-sm">
+                            <h4>Your BMI Result</h4>
+                            <p class="display-6 text-primary">{{ bmiResult }}</p>
+                            <p class="fw-bold">{{ bmiCategory }}</p>
+                        </div>
+
+                        <!-- BMI Category Meter -->
+                        <div class="mt-4">
+                            <label class="form-label fw-semibold">BMI Category Meter</label>
+                            <div class="progress" style="height: 30px;">
+                                <div class="progress-bar bg-danger" role="progressbar" 
+                                     ng-style="{width: underweightPercent + '%'}" 
+                                     aria-valuemin="0" aria-valuemax="100">Underweight</div>
+                                <div class="progress-bar bg-success" role="progressbar" 
+                                     ng-style="{width: normalPercent + '%'}" 
+                                     aria-valuemin="0" aria-valuemax="100">Normal</div>
+                                <div class="progress-bar bg-warning" role="progressbar" 
+                                     ng-style="{width: overweightPercent + '%'}" 
+                                     aria-valuemin="0" aria-valuemax="100">Overweight</div>
+                                <div class="progress-bar bg-danger" role="progressbar" 
+                                     ng-style="{width: obesityPercent + '%'}" 
+                                     aria-valuemin="0" aria-valuemax="100">Obesity</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Body Types Section -->
+        <div class="col-md-10 mt-5">
+            <h3 class="text-center fw-bold mb-4">Body Types</h3>
+            <p class="text-center text-muted">
+                Your body type can be categorized into three types: Ectomorph, Mesomorph, and Endomorph.
+            </p>
+            <div class="row text-center">
+                <div class="col-md-4 mb-4">
+                    <img src="https://img.freepik.com/premium-photo/studio-portrait-ectomorph-muscle-shirtless-male-shows-his-biceps-dark-grey-background_613910-15277.jpg" alt="Ectomorph" class="img-fluid rounded shadow-sm">
+                    <h5 class="fw-bold mt-3">Ectomorph</h5>
+                    <p class="text-muted">Slim and lean body type.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <img src="https://tse4.mm.bing.net/th?id=OIP.uOa3JXRrDLcwz1egEA9KFgHaKK&pid=Api&P=0&h=220" 
+                         alt="Mesomorph" class="img-fluid rounded shadow-sm">
+                    <h5 class="fw-bold mt-3">Mesomorph</h5>
+                    <p class="text-muted">Proportional and athletic body type.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <img src="https://tse4.mm.bing.net/th?id=OIP.bw8OsmF-sdKNIP0bU4wdPAAAAA&pid=Api&P=0&h=220" 
+                         alt="Endomorph" class="img-fluid rounded shadow-sm">
+                    <h5 class="fw-bold mt-3">Endomorph</h5>
+                    <p class="text-muted">Stocky and round body type.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tips for a Healthy Lifestyle Section -->
+    <div class="col-md-10 mt-5">
+        <h3 class="text-center fw-bold mb-4">Tips for a Healthy Lifestyle</h3>
+        <p class="text-center text-muted">
+            Maintaining a healthy lifestyle is essential for overall well-being. Here are some tips to help you stay on track:
+        </p>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <strong>1. Eat a Balanced Diet:</strong> Include a variety of fruits, vegetables, whole grains, and lean proteins in your meals.
+            </li>
+            <li class="list-group-item">
+                <strong>2. Stay Hydrated:</strong> Drink plenty of water throughout the day to keep your body hydrated.
+            </li>
+            <li class="list-group-item">
+                <strong>3. Exercise Regularly:</strong> Aim for at least 150 minutes of moderate aerobic activity or 75 minutes of vigorous activity each week.
+            </li>
+            <li class="list-group-item">
+                <strong>4. Get Enough Sleep:</strong> Aim for 7-9 hours of quality sleep each night to help your body recover and function optimally.
+            </li>
+            <li class="list-group-item">
+                <strong>5. Manage Stress:</strong> Practice relaxation techniques such as yoga, meditation, or deep breathing exercises to reduce stress levels.
+            </li>
+            <li class="list-group-item">
+                <strong>6. Regular Health Check-ups:</strong> Schedule regular check-ups with your healthcare provider to monitor your health.
+            </li>
+        </ul>
+    </div>  
+</div>
