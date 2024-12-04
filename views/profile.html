@@ -1,248 +1,89 @@
-<style>
-    body,
-    html {
-        height: 100%;
-        margin: 0;
-        font-family: 'Times new roman', sans-serif;
-    }
-
-    .profilepage {
-        background-image: url('https://png.pngtree.com/background/20230516/original/pngtree-large-room-full-of-equipment-in-a-gym-picture-image_2611111.jpg');
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-    }
-
-    .profile-overlay {
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(10px);
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        padding: 20px;
-        width: 90%;
-        max-width: 500px;
-    }
-
-    .profile-header {
-        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-        color: white;
-        text-align: center;
-        padding: 20px;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-        margin-bottom: 20px;
-    }
-
-    .profile-image-container {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 20px;
-    }
-
-    .profile-image {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 4px solid white;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        transition: transform 0.3s ease;
-    }
-
-    .profile-image:hover {
-        transform: scale(1.1);
-    }
-
-    .profile-details {
-        text-align: center;
-    }
-
-    .profile-actions {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
-        margin-top: 20px;
-    }
-
-    .profile-action-btn {
-        flex-grow: 1;
-        padding: 10px;
-        text-align: center;
-        border-radius: 8px;
-        font-weight: bold;
-        transition: all 0.3s ease;
-    }
-
-    .logout-btn {
-        background: linear-gradient(to right, #ff416c, #ff4b2b);
-        color: white;
-    }
-
-    .logout-btn:hover {
-        transform: scale(1.05);
-    }
-
-    .btn-primary {
-        background: #2575fc;
-        color: white;
-    }
-
-    .btn-primary:hover {
-        background: #6a11cb;
-    }
-
-    .alert {
-        margin-top: 15px;
-    }
-
-    .progress-indicator {
-        display: none;
-        margin-top: 10px;
-        text-align: center;
-        color: #6a11cb;
-    }
-
-    .progress-indicator.show {
-        display: block;
-    }
-
-    .profile-status {
-        text-align: center;
-        margin-bottom: 20px;
-        padding: 10px;
-        background: rgba(37, 117, 252, 0.1);
-        border-radius: 8px;
-    }
-
-    .profile-status-text {
-        color: #6a11cb;
-        font-weight: 600;
-        margin: 0;
-    }
-
-    .profile-status-edit {
-        color: #2575fc;
-        cursor: pointer;
-        margin-top: 5px;
-        font-size: 0.9rem;
-        transition: color 0.3s ease;
-    }
-
-    .profile-status-edit:hover {
-        color: #6a11cb;
-        text-decoration: underline;
-    }
-
-    .status-edit-input {
-        width: 100%;
-        padding: 8px;
-        margin-top: 10px;
-        border: 1px solid #2575fc;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-    }
-
-    .status-edit-input:focus {
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.2);
-    }
-
-    .status-edit-buttons {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 10px;
-    }
-
-    .status-edit-buttons .btn {
-        flex-grow: 1;
-        margin: 0 5px;
-        padding: 8px;
-        font-size: 0.9rem;
-    }
-</style>
-
-<div class="container mt-5 profilepage">
-    <div ng-if="user" class="profile-overlay">
-        <div class="profile-header">
-            <h3>Profil Pengguna</h3>
-        </div>
-        <div class="profile-image-container">
-            <img ng-src="{{ profileImage || 'default-profile.png' }}" alt="Profile Image" class="profile-image" />
-            <input type="file" ng-model="file" class="file-input" style="display: none;"
-                onchange="angular.element(this).scope().uploadImage(this.files)" accept="image/*" />
-            <img ng-if="previewImage" ng-src="{{ previewImage }}" class="profile-image-preview" />
-        </div>
-        
-        
-        <div class="profile-details">
-            <h4>{{ user.username }}</h4>
-            <p><strong>Email:</strong> {{ user.email }}</p>
-        </div>
-        <div class="profile-actions">
-            <label class="btn btn-primary profile-action-btn">
-                Ubah Foto
-                <input type="file" ng-model="file" class="file-input" style="display: none;"
-                    onchange="angular.element(this).scope().uploadImage(this.files)" accept="image/*" />
-            </label>
-            <button class="btn btn-info profile-action-btn" ng-click="goToBMICalculator()">
-                BMI Calculator
-            </button>
-            <button class="btn logout-btn profile-action-btn" ng-click="logout()">
-                Logout
-            </button>
-            <button class="btn btn-danger profile-action-btn" ng-click="deleteAccount()">
-                Hapus Akun
-            </button>
-            <button class="btn btn-warning profile-action-btn" ng-click="toggleChangePasswordForm()">
-                Ubah Password
-            </button>
-        </div>
-        <div class="progress-indicator" ng-class="{'show': isUploading}">
-            Uploading... Please wait.
-        </div>
-        <div ng-if="successMessage" class="alert alert-success">
-            {{ successMessage }}
-        </div>
-        <div ng-if="errorMessage" class="alert alert-danger">
-            {{ errorMessage }}
-        </div>
-    </div>
-</div>
-
-<!-- Modal for changing password -->
-<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true" ng-show="showChangePasswordForm" ng-class="{'show': showChangePasswordForm}">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="changePasswordModalLabel">Ubah Password</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ng-click="toggleChangePasswordForm()"></button>
+<div class="container mt-5 d-flex justify-content-center align-items-center">
+    <div class="card shadow-lg border-0" style="max-width: 600px; width: 100%; border-radius: 20px;">
+        <!-- Profile Header -->
+        <div class="card-header text-white text-center py-5 position-relative"
+             style="background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); border-radius: 20px 20px 0 0;">
+            <div class="position-relative">
+                <img ng-src="{{ profileImage || 'default-profile.png' }}" 
+                     alt="Profile Picture" 
+                     class="rounded-circle border border-4 border-white shadow-lg mb-3" 
+                     style="width: 140px; height: 140px; object-fit: cover; cursor: pointer; transition: transform 0.3s;">
+                <label class="btn btn-light btn-sm px-3 py-2 shadow-sm rounded-pill position-absolute"
+                       style="top: 110px; left: 50%; transform: translateX(-50%); font-size: 12px;">
+                    <i class="bi bi-camera me-2"></i>Ubah Foto
+                    <input type="file" ng-model="file" class="file-input d-none"
+                           onchange="angular.element(this).scope().uploadImage(this.files)" accept="image/*" />
+                </label>
             </div>
-            <div class="modal-body">
-                <form ng-submit="changePassword()">
-                    <div class="mb-3">
-                        <label for="oldPassword" class="form-label">Password Lama:</label>
-                        <input type="password" id="oldPassword" ng-model="oldPassword" required class="form-control"/>
-                    </div>
-                    <div class="mb-3">
-                        <label for="newPassword" class="form-label">Password Baru:</label>
-                        <input type="password" id="newPassword" ng-model="newPassword" required class="form-control"/>
-                    </div>
-                    <div class="mb-3">
-                        <label for="confirmNewPassword" class="form-label">Konfirmasi Password Baru:</label>
-                        <input type="password" id="confirmNewPassword" ng-model="confirmNewPassword" required class="form-control"/>
-                    </div>
-                    <!-- Show error message if passwords don't match -->
-                    <div ng-if="errorMessage" class="text-danger mb-3">{{errorMessage}}</div>
-                </form>
+            <h3 class="mt-3 fw-bold">{{ user.username }}</h3>
+        </div>
+
+        <!-- Profile Content -->
+        <div class="card-body p-4">
+            <h5 class="text-primary mb-4 text-center fw-bold">Profile Details</h5>
+            <ul class="list-group list-group-flush mb-4">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-envelope-fill me-2 text-primary"></i>Email:</span>
+                    <strong>{{ user.email }}</strong>
+                </li>
+            </ul>
+
+            <!-- Action Buttons -->
+            <div class="row text-center gx-3 gy-3">
+                <div class="col-6">
+                    <button class="btn btn-info w-100 rounded-pill py-2" ng-click="goToBMICalculator()">
+                        <i class="bi bi-calculator me-2"></i>
+                        <a href="#/bmi" class="text-white text-decoration-none">BMI Calculator</a>
+                    </button>
+                </div>
+                <div class="col-6">
+                    <button class="btn btn-danger w-100 rounded-pill py-2" ng-click="deleteAccount()">
+                        <i class="bi bi-trash me-2"></i>Delete Account
+                    </button>
+                </div>
+                <div class="col-6">
+                    <button class="btn btn-warning w-100 rounded-pill py-2" ng-click="toggleChangePasswordForm()">
+                        <i class="bi bi-lock me-2"></i>Change Password
+                    </button>
+                </div>
+                <div class="col-6">
+                    <button class="btn btn-primary w-100 rounded-pill py-2" ng-click="logout()">
+                        <i class="bi bi-box-arrow-right me-2"></i>Logout
+                    </button>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" ng-click="toggleChangePasswordForm()">Batal</button>
-                <button type="submit" class="btn btn-primary" ng-click="changePassword()">Simpan Password</button>
+        </div>
+
+        <!-- Modal for Changing Password -->
+        <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true" ng-show="showChangePasswordForm">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-warning text-white">
+                        <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ng-click="toggleChangePasswordForm()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form ng-submit="changePassword()">
+                            <div class="mb-3">
+                                <label for="oldPassword" class="form-label">Old Password</label>
+                                <input type="password" id="oldPassword" ng-model="oldPassword" required class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">New Password</label>
+                                <input type="password" id="newPassword" ng-model="newPassword" required class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmNewPassword" class="form-label">Confirm New Password</label>
+                                <input type="password" id="confirmNewPassword" ng-model="confirmNewPassword" required class="form-control">
+                            </div>
+                            <div ng-if="errorMessage" class="text-danger mb-3">{{ errorMessage }}</div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal" ng-click="toggleChangePasswordForm()">Cancel</button>
+                        <button type="submit" class="btn btn-warning rounded-pill" ng-click="changePassword()">Save Password</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
