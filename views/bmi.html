@@ -18,11 +18,9 @@
                     <div class="row g-4">
                         <div class="col-md-6">
                             <label for="weight" class="form-label fw-semibold text-primary">Weight (kg)</label>
-                            <div class="input-group align-items-center">
-                                <input type="range" id="weight" class="form-range" min="30" max="150" ng-model="weight"
-                                    ng-change="calculateBMI()">
-                                <input type="number" class="form-control text-center shadow-sm" min="30" max="150"
-                                    ng-model="weight" ng-change="calculateBMI()" placeholder="Type weight">
+                            <div class="input-group">
+                                <input type="range" id="weight" class="form-range" min="30" max="150" ng-model="weight" ng-change="calculateBMI()">
+                                <input type="number" class="form-control text-center shadow-sm" min="30" max="150" ng-model="weight" ng-change="calculateBMI()" placeholder="Type weight">
                                 <span class="input-group-text bg-light">kg</span>
                             </div>
                         </div>
