@@ -20,7 +20,7 @@ body {
 }
 
 .nav-link:hover {
-    color: #FF7043;
+    color: #fbb702;
 }
 
 .nav-link::after {
@@ -31,7 +31,7 @@ body {
     transform: translateX(-50%);
     height: 2px;
     width: 0;
-    background-color: #FF7043;
+    background-color: #fbb702;
     transition: width 0.3s ease;
 }
 
@@ -119,7 +119,7 @@ body {
     padding: 10px 20px;
     font-size: 1rem;
     font-weight: 500;
-    background-color: #FF7043;
+    background-color: #fbb702;;
     border: none;
 }
 
@@ -171,7 +171,7 @@ body {
 }
 
 .btn-custom {
-    background-color: #FF7043;
+    background-color: #fbb702;;
 }
 
 .btn-custom:hover {
@@ -258,6 +258,16 @@ footer {
     font-weight: bold;
 }
 
+.title-hover {
+    transition: color 0.3s ease;
+}
+
+.title-hover:hover {
+    color: #fbb702 !important;
+}
+
+
+
 /* Healthy Food */
 .header-food {
     position: relative;
@@ -331,4 +341,42 @@ footer {
     width: 100%;
     height: 180px;
     object-fit: cover;
+}
+
+.card:hover {
+    transform: scale(5rem);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.card-body:hover {
+    background-color: #f8f9fa;
+    transition: background-color 0.3s ease;
+}
+
+.fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.fade-up.ng-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.comment {
+    margin-left: 3rem;
+}
+
+/* Team */
+.team {
+    width: 150px; 
+    height: 150px; 
+    object-fit: cover; 
+    border-radius: 50%; 
+}
+
+.title-color {
+    color: #fbb702;
 }
