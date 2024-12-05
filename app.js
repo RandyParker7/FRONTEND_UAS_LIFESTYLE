@@ -38,6 +38,16 @@ app.config(function($routeProvider, $locationProvider) {
             controller: 'BmiController',
             css: 'css/style.css'
         })
+        .when('/FAQ', {
+            templateUrl: 'views/FAQ.html',
+            css: 'css/style.css'
+        })
+        .when('/WorkoutPlaylist', {
+            templateUrl: 'views/WorkoutPlaylist.html',
+            controller: 'WorkoutPlaylistController',
+            css: 'css/style.css'
+        })
+        
         .when('/profile', {
             templateUrl: 'views/profile.html',
             controller: 'ProfileController',

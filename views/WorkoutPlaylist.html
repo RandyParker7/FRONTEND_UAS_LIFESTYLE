@@ -1,0 +1,49 @@
+<div class="container my-5">
+    <h2 class="section-header text-center mb-5"
+        style="font-family: 'Roboto', sans-serif; font-weight: bold; color: #fbb702;">
+        Workout Playlist
+    </h2>
+    <div class="row gy-4">
+        <!-- Card 1: Spotify Playlist -->
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-4 hover-shadow">
+                <div class="card-body text-center p-4">
+                    <h5 class="card-title text-uppercase mb-3" style="font-weight: bold; font-size: 1.25rem;">Energizing
+                        Beats</h5>
+                    <p class="card-text text-muted mb-4">Playlist penuh semangat untuk sesi kardio Anda!</p>
+                    <iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DX76Wlfdnj7AP" width="100%"
+                        height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"
+                        class="rounded-3 shadow"></iframe>
+                </div>
+                <div class="card-footer text-center">
+                    <button class="btn btn-primary rounded-pill px-4 py-2 btn-hover" 
+                        ng-click="handleButtonClick('spotify')">
+                        Play Now
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2: YouTube Playlist -->
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-4 hover-shadow">
+                <div class="card-body text-center p-4">
+                    <h5 class="card-title text-uppercase mb-3" style="font-weight: bold; font-size: 1.25rem;">
+                        High-Intensity Music</h5>
+                    <p class="card-text text-muted mb-4">Video playlist yang cocok untuk sesi HIIT Anda.</p>
+                    <iframe width="100%" height="380"
+                        src="https://www.youtube.com/embed/M7xx0WejDV4?si=s6P4MsXcGf7lFWcf" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+                </div>
+                <div class="card-footer text-center">
+                    <button class="btn btn-primary rounded-pill px-4 py-2 btn-hover" 
+                        ng-click="handleButtonClick('youtube')">
+                        Watch Now
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
