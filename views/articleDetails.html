@@ -2,7 +2,7 @@
     <h1>{{ article.title }}</h1>
     <div style="white-space: pre-wrap;">{{ article.content }}</div>
 
-    <a href="#/article" class="btn btn-secondary">Back to Articles</a>
+    <a href="#/article" class="btn btn-secondary" ng-if="isLoggedIn">Back to Articles</a>
 
     <!-- Comments Section -->
     <div class="mt-4">
@@ -22,7 +22,7 @@
         
                             <div class="card w-100">
                                 <div class="card-body p-4">
-                                    <!-- Comment Info -->   
+                                    <!-- Comment Info --> 
                                     <div class="">
                                         <h5>{{ comment.author }}</h5>
                                         <p class="small">{{ comment.createdAt | date:'short' }}</p>
