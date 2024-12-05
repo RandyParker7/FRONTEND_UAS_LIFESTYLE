@@ -75,7 +75,7 @@
                     <div class="card border-0 shadow-sm">
                         <!-- Image Section (Left) -->
                         <figure class="card-img-top m-0 overflow-hidden" style="height: 150px;" >
-                            <a ng-href="#/login">
+                            <a ng-href="#/article/{{ article._id }}">
                                 <img ng-src="{{ article.image }}" alt="{{ article.title }}" class="img-fluid" ng-if="article.image" style="object-fit: cover;">
                                 <!-- Placeholder if no image -->
                                 <div ng-if="!article.image" style="height: 100%; background-color: #c5c5c5;"></div>
@@ -86,7 +86,7 @@
                         <div class="card-body bg-light text-dark p-2">
                             <!-- Article Title -->
                             <h5 class="card-title mb-1" style="font-size: 1rem;">
-                                <a class="link-dark title-hover text-decoration-none" ng-href="#/login">{{ article.title }}</a>
+                                <a class="link-dark title-hover text-decoration-none" ng-href="#/aticle">{{ article.title }}</a>
                             </h5>
                         </div>
     
@@ -120,7 +120,7 @@
                         <div class="card border-0 shadow-sm">
                             <!-- Image Section (Left) -->
                             <figure class="card-img-top m-0 overflow-hidden" style="height: 150px;">
-                                <a ng-href="#/login">
+                                <a ng-href="#/food/{{ recipe._id }}">
                                     <img ng-src="{{ recipes.image }}" alt="{{ recipes.title }}" class="img-fluid" ng-if="recipes.image" style="object-fit: cover;">
                                     <!-- Placeholder if no image -->
                                     <div ng-if="!recipes.image" style="height: 100%; background-color: #c5c5c5;"></div>
@@ -131,7 +131,7 @@
                             <div class="card-body bg-light text-dark p-2">
                                 <!-- Article Title -->
                                 <h5 class="card-title mb-1" style="font-size: 1rem;">
-                                    <a class="link-dark text-decoration-none title-hover" ng-href="#/login">{{ recipes.title }}</a>
+                                    <a class="link-dark text-decoration-none title-hover" ng-href="#/food">{{ recipes.title }}</a>
                                 </h5>
                             </div>
         
@@ -267,7 +267,7 @@
                                 </div>
                                 <div>
                                     <h4 class="mb-2">Address</h4>
-                                    <address class="mb-0 text-secondary">8014 Edith Blvd NE, Albuquerque, New York, United States</address>
+                                    <address class="mb-0 text-secondary">Universitas Tarumanagara</address>
                                 </div>
                             </div>
                             <div class="d-flex mb-3">
@@ -279,7 +279,7 @@
                                 <div>
                                     <h4 class="mb-2">Phone</h4>
                                     <p class="mb-0">
-                                        <a class="link-secondary text-decoration-none" href="tel:+15057922430">(505) 792-2430</a>
+                                        <a class="link-secondary text-decoration-none" href="tel:+15057922430">(021) 792-2430</a>
                                     </p>
                                 </div>
                             </div>
@@ -293,7 +293,7 @@
                                 <div>
                                     <h4 class="mb-2">E-Mail</h4>
                                     <p>
-                                        <a class="link-secondary text-decoration-none" href="mailto:demo@yourdomain.com">demo@yourdomain.com</a>
+                                        <a class="link-secondary text-decoration-none" href="mailto:demo@yourdomain.com">FitZone@yourdomain.com</a>
                                     </p>
                                 </div>
                             </div>
@@ -318,7 +318,7 @@
                     <div class="card text-center border-0 mb-3">
                         <div class="card-body p-3">
                             <div class="mb-4 mx-lg-3 mx-xxl-5"><img class="img-fluid rounded-circle team" src="/image/steve.jpg"></div>
-                            <h5 class="fw-bold">Stevn Ricky Lie</h5>
+                            <h5 class="fw-bold">Steven Ricky Lie</h5>
                             <div class="text-muted">
                                 Programmer
                             </div>  

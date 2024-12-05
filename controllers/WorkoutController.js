@@ -54,6 +54,7 @@ app.controller('WorkoutController', function ($scope, $http) {
     $scope.editWorkout = function (workout) {
         $scope.currentWorkout = angular.copy(workout);
         $scope.isEditing = true;
+        $('#editWorkoutModal').modal('show'); 
     };
 
     // Update an existing workout
@@ -103,10 +104,8 @@ app.controller('WorkoutController', function ($scope, $http) {
     $scope.resetForm = function () {
         $scope.currentWorkout = {};
         $scope.isEditing = false;
-    };
-
-    $scope.cancelEdit = function () {
-        $scope.resetForm();
+        $('#addWorkoutModal').modal('hide'); 
+        $('#editWorkoutModal').modal('hide'); 
     };
 
     // Initial data fetch
