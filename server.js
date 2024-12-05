@@ -7,6 +7,7 @@ const SECRET_KEY = 'your_secret_key';
 const bcrypt = require('bcrypt');
 const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() });
+const path = require('path');
 
 // Create an Express application
 const app = express();
@@ -17,6 +18,8 @@ app.use(cors());
 
 // Middleware to parse JSON request bodies
 app.use(bodyParser.json());
+
+app.use(express.static(path.join(__dirname)));
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/uas-frontend', { useNewUrlParser: true, useUnifiedTopology: true })
@@ -792,6 +795,10 @@ app.delete('/api/recipecomments/:id', async (req, res) => {
 });
 // Admin End //
 
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 // Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
