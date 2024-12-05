@@ -35,6 +35,8 @@
                         <figure class="card-img-top m-0 overflow-hidden">
                             <a ng-href="#/food/{{ recipe._id }}">
                                 <img ng-src="{{ recipe.image }}" alt="{{ recipe.title }}" class="img-fluid mb-3 fixed-image" ng-if="recipe.image">
+
+                                <div ng-if="!.image" style="height: 100%; background-color: #e0e0e0;"></div>
                             </a>
                         </figure>
 
@@ -45,10 +47,11 @@
                                 <ul class="entry-meta list-unstyled d-flex mb-2">
                                     <li>
                                         <a class="link-primary text-decoration-none">{{ recipe.category }}</a>
+                                        
                                     </li>
                                 </ul>
                                 <h2 class="card-title entry-title h4 mb-0">
-                                    <a class="link-dark text-decoration-none" ng-href="#/food/{{ recipe._id }}">{{ recipe.title }}</a>
+                                    <a class="link-dark text-decoration-none title-hover" ng-href="#/food/{{ recipe._id }}">{{ recipe.title }}</a>
                                 </h2>
                             </div>
                             <!-- Recipe Content Preview -->

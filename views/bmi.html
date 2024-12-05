@@ -1,1 +1,207 @@
-<p>bmi page</p>
+<div class="container py-5">
+    <!-- Header Section -->
+    <div class="header-bmi text-center mb-5">
+        <h1 class="display-4 fw-bold text-info animate__animated animate__fadeIn">BMI Calculator</h1>
+        <p class="text-muted animate__animated animate__fadeIn animate__delay-1s">
+            Calculate your Body Mass Index (BMI) and discover which health category you belong to.
+        </p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="row justify-content-center">
+        <!-- BMI Input Card -->
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-4 bg-light p-4">
+                <div class="card-body">
+                    <!-- Input Section -->
+                    <h4 class="text-center fw-bold text-info mb-3">Input Your Details</h4>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label for="weight" class="form-label fw-semibold text-primary">Weight (kg)</label>
+                            <div class="input-group">
+                                <input type="range" id="weight" class="form-range" min="30" max="150" ng-model="weight" ng-change="calculateBMI()">
+                                <input type="number" class="form-control text-center shadow-sm" min="30" max="150" ng-model="weight" ng-change="calculateBMI()" placeholder="Type weight">
+                                <span class="input-group-text bg-light">kg</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="height" class="form-label fw-semibold text-primary">Height (cm)</label>
+                            <input type="number" id="height" class="form-control shadow-sm" placeholder="Enter height"
+                                ng-model="height" required ng-change="calculateBMI()">
+                        </div>
+                    </div>
+
+                    <!-- Buttons Section -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <button class="btn btn-success fw-bold px-4 shadow-sm" ng-click="calculateBMI()">
+                            Calculate BMI
+                        </button>
+                        <button class="btn btn-secondary fw-bold px-4 shadow-sm" ng-click="resetInputs()">
+                            Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Section -->
+        <div ng-show="bmiResult" class="mt-4 text-center">
+            <div class="alert alert-info shadow-sm rounded-3">
+                <h4>Your BMI Result</h4>
+                <p class="display-6 text-primary">{{ bmiResult }}</p>
+                <span class="badge bg-success fs-6">{{ bmiCategory }}</span>
+            </div>
+
+            <!-- BMI Scale -->
+            <div class="mt-4">
+                <h5 class="text-primary fw-bold">BMI Scale</h5>
+                <div class="position-relative" style="height: 50px;">
+                    <!-- Scale Container -->
+                    <div class="progress" style="height: 30px; border-radius: 20px;">
+                        <div class="progress-bar bg-danger" style="width: 18.5%;">Underweight</div>
+                        <div class="progress-bar bg-success" style="width: 25%;">Normal</div>
+                        <div class="progress-bar bg-warning" style="width: 15%;">Overweight</div>
+                        <div class="progress-bar bg-danger" style="width: 41.5%;">Obesity</div>
+                    </div>
+
+                    <!-- Pointer -->
+                    <div class="position-absolute top-50 translate-middle-y" ng-style="{'left': pointerPosition + '%'}"
+                        style="width: 20px; height: 20px; background-color: #0d6efd; border-radius: 50%; border: 2px solid white;">
+                    </div>
+                </div>
+                <small class="text-muted">Your BMI result is positioned on the scale above.</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Body Types Section -->
+    <div class="container body-types-section mt-5">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="text-center fw-bold mb-4 text-primary animate__animated animate__fadeIn animate__delay-2s">
+                    <i class="bi bi-person-badge me-2"></i>Body Types Exploration
+                </h3>
+                <p class="text-center text-muted lead animate__animated animate__fadeIn animate__delay-2s mb-5">
+                    Discover the unique characteristics of different body compositions and their metabolic tendencies.
+                </p>
+            </div>
+        </div>
+        
+        <div class="row g-4 justify-content-center">
+            <!-- Ectomorph Card -->
+            <div class="col-md-4 mb-4">
+                <div class="card body-type-card h-100 border-0 shadow-sm hover-effect">
+                    <div class="card-img-top position-relative overflow-hidden">
+                        <img src="https://img.freepik.com/premium-photo/studio-portrait-ectomorph-muscle-shirtless-male-shows-his-biceps-dark-grey-background_613910-15277.jpg" 
+                             alt="Ectomorph" 
+                             class="img-fluid w-100 body-type-image">
+                        <div class="card-img-overlay d-flex align-items-end p-0">
+                            <div class="bg-primary text-white w-100 text-center py-2">
+                                <h5 class="mb-0">Ectomorph</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body text-center">
+                        <p class="card-text text-muted">
+                            Characterized by a slim, linear physique with difficulty gaining muscle or fat. 
+                            Typically has a fast metabolism and narrow shoulders and hips.
+                        </p>
+                        <ul class="list-unstyled text-muted">
+                            <li><i class="bi bi-chevron-right text-primary me-2"></i>Lean and lanky build</li>
+                            <li><i class="bi bi-chevron-right text-primary me-2"></i>Fast metabolism</li>
+                            <li><i class="bi bi-chevron-right text-primary me-2"></i>Struggles to gain weight</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Mesomorph Card -->
+            <div class="col-md-4 mb-4">
+                <div class="card body-type-card h-100 border-0 shadow-sm hover-effect">
+                    <div class="card-img-top position-relative overflow-hidden">
+                        <img src="https://tse4.mm.bing.net/th?id=OIP.uOa3JXRrDLcwz1egEA9KFgHaKK&pid=Api&P=0&h=220" 
+                             alt="Mesomorph" 
+                             class="img-fluid w-100 body-type-image">
+                        <div class="card-img-overlay d-flex align-items-end p-0">
+                            <div class="bg-success text-white w-100 text-center py-2">
+                                <h5 class="mb-0">Mesomorph</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body text-center">
+                        <p class="card-text text-muted">
+                            Athletic and muscular body type that gains and loses weight relatively easily. 
+                            Naturally strong with an efficient metabolism.
+                        </p>
+                        <ul class="list-unstyled text-muted">
+                            <li><i class="bi bi-chevron-right text-success me-2"></i>Athletic and muscular</li>
+                            <li><i class="bi bi-chevron-right text-success me-2"></i>Easy muscle gain</li>
+                            <li><i class="bi bi-chevron-right text-success me-2"></i>Balanced metabolism</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Endomorph Card -->
+            <div class="col-md-4 mb-4">
+                <div class="card body-type-card h-100 border-0 shadow-sm hover-effect">
+                    <div class="card-img-top position-relative overflow-hidden">
+                        <img src="https://tse4.mm.bing.net/th?id=OIP.bw8OsmF-sdKNIP0bU4wdPAAAAA&pid=Api&P=0&h=220" 
+                             alt="Endomorph" 
+                             class="img-fluid w-100 body-type-image">
+                        <div class="card-img-overlay d-flex align-items-end p-0">
+                            <div class="bg-warning text-white w-100 text-center py-2">
+                                <h5 class="mb-0">Endomorph</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body text-center">
+                        <p class="card-text text-muted">
+                            Soft and round body type with a tendency to store body fat. 
+                            Usually has a slower metabolism and wider bone structure.
+                        </p>
+                        <ul class="list-unstyled text-muted">
+                            <li><i class="bi bi-chevron-right text-warning me-2"></i>Softer, rounder physique</li>
+                            <li><i class="bi bi-chevron-right text-warning me-2"></i>Easy fat storage</li>
+                            <li><i class="bi bi-chevron-right text-warning me-2"></i>Slower metabolism</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Healthy Lifestyle Tips Section -->
+    <div class="col-md-10 mt-5">
+        <h3 class="text-center fw-bold mb-4 text-info">Tips for a Healthy Lifestyle</h3>
+        <p class="text-center text-muted">
+            Maintaining a healthy lifestyle is essential for overall well-being. Here are some tips to help you stay on
+            track:
+        </p>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <strong>1. Eat a Balanced Diet:</strong> Include a variety of fruits, vegetables, whole grains, and lean
+                proteins in your meals.
+            </li>
+            <li class="list-group-item">
+                <strong>2. Stay Hydrated:</strong> Drink plenty of water throughout the day to keep your body hydrated.
+            </li>
+            <li class="list-group-item">
+                <strong>3. Exercise Regularly:</strong> Aim for at least 150 minutes of moderate aerobic activity or 75
+                minutes of vigorous activity each week.
+            </li>
+            <li class="list-group-item">
+                <strong>4. Get Enough Sleep:</strong> Aim for 7-9 hours of quality sleep each night to help your body
+                recover and function optimally.
+            </li>
+            <li class="list-group-item">
+                <strong>5. Manage Stress:</strong> Practice relaxation techniques such as yoga, meditation, or deep
+                breathing exercises to reduce stress levels.
+            </li>
+            <li class="list-group-item">
+                <strong>6. Regular Health Check-ups:</strong> Schedule regular check-ups with your healthcare provider
+                to monitor your health.
+            </li>
+        </ul>
+    </div>
+</div>
