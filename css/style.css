@@ -369,7 +369,7 @@ footer {
     margin-left: 3rem;
 }
 
-/* Our Team */
+/* Team */
 .team {
     width: 150px; 
     height: 150px; 
@@ -381,12 +381,10 @@ footer {
     color: #fbb702;
 }
 
-
-/* BMI Calculator */
 :root {
     --primary-color: #0d6efd;
     --secondary-color: #6c757d;
-    --success-color: #fbb702;
+    --success-color: #28a745;
     --transition-speed: 0.3s;
 }
 
@@ -490,4 +488,31 @@ input[type="range"]:hover {
     font-weight: bold;
     color: var(--primary-color);
 }
-    
+.accordion-button:not(.collapsed) {
+    background-color: #6a11cb;
+    color: white;
+}
+
+.accordion-button {
+    border-radius: 8px;
+    font-size: 1.2rem;
+    padding: 15px 25px;
+}
+
+.accordion-body {
+    font-size: 1rem;
+    padding: 20px;
+    background-color: #fafafa;
+}
+iframe {
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+}
+
+iframe:hover {
+    transform: scale(1.05);
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
