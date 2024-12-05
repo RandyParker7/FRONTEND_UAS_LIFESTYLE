@@ -344,14 +344,14 @@ footer {
 }
 
 .card:hover {
-    transform: scale(5rem);
+    transform: none;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 .card-body:hover {
     background-color: #f8f9fa;
-    transition: background-color 0.3s ease;
+    transition:none;
 }
 
 .fade-up {
@@ -369,7 +369,7 @@ footer {
     margin-left: 3rem;
 }
 
-/* Team */
+/* Our Team */
 .team {
     width: 150px; 
     height: 150px; 
@@ -381,10 +381,12 @@ footer {
     color: #fbb702;
 }
 
+
+/* BMI Calculator */
 :root {
     --primary-color: #0d6efd;
     --secondary-color: #6c757d;
-    --success-color: #28a745;
+    --success-color: #fbb702;
     --transition-speed: 0.3s;
 }
 
@@ -392,10 +394,6 @@ footer {
     min-height: 100vh;
     display: flex;
     align-items: center;
-}
-
-.card {
-    transition: all var(--transition-speed) ease;
 }
 
 input[type="range"] {
@@ -492,8 +490,4 @@ input[type="range"]:hover {
     font-weight: bold;
     color: var(--primary-color);
 }
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
-}
+    

@@ -2,21 +2,40 @@
     <div class="card shadow-lg border-0" style="max-width: 600px; width: 100%; border-radius: 20px;">
         <!-- Profile Header -->
         <div class="card-header text-white text-center py-5 position-relative"
-             style="background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); border-radius: 20px 20px 0 0;">
+            style="background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); border-radius: 20px 20px 0 0;">
             <div class="position-relative">
-                <img ng-src="{{ profileImage || 'default-profile.png' }}" 
-                     alt="Profile Picture" 
-                     class="rounded-circle border border-4 border-white shadow-lg mb-3" 
-                     style="width: 140px; height: 140px; object-fit: cover; cursor: pointer; transition: transform 0.3s;">
-                <label class="btn btn-light btn-sm px-3 py-2 shadow-sm rounded-pill position-absolute"
-                       style="top: 110px; left: 50%; transform: translateX(-50%); font-size: 12px;">
-                    <i class="bi bi-camera me-2"></i>Ubah Foto
+                <!-- Conditional Profile Picture -->
+                <div ng-if="profileImage" class="d-inline-block position-relative">
+                    <img ng-src="{{ profileImage }}" alt="Profile Picture"
+                        class="rounded-circle border border-4 border-white shadow-lg mb-3"
+                        style="width: 140px; height: 140px; object-fit: cover; cursor: pointer; transition: transform 0.3s;">
+
+                    <!-- Change Photo Button -->
+                    <label
+                        class="btn btn-light btn-sm shadow-sm rounded-circle position-absolute d-flex align-items-center justify-content-center"
+                        style="bottom: -15px; left: 50%; transform: translateX(-50%); width: 50px; height: 50px; cursor: pointer; transition: all 0.3s ease-in-out;">
+                        <i class="bi bi-camera" style="font-size: 20px; color: #6a11cb;"></i>
+                        <input type="file" ng-model="file" class="file-input d-none"
+                            onchange="angular.element(this).scope().uploadImage(this.files)" accept="image/*" />
+                    </label>
+                </div>
+            </div>
+
+            <!-- Username -->
+            <h3 class="mt-4 fw-bold">{{ user.username }}</h3>
+
+            <!-- Default Upload Button (No Profile Image Yet) -->
+            <div ng-if="!profileImage" class="mt-3">
+                <label class="btn btn-light btn-sm shadow-sm rounded-pill d-inline-block px-4 py-2"
+                    style="cursor: pointer; font-size: 14px; transition: all 0.3s;">
+                    <i class="bi bi-camera me-2"></i>Tambahkan Foto
                     <input type="file" ng-model="file" class="file-input d-none"
-                           onchange="angular.element(this).scope().uploadImage(this.files)" accept="image/*" />
+                        onchange="angular.element(this).scope().uploadImage(this.files)" accept="image/*" />
                 </label>
             </div>
-            <h3 class="mt-3 fw-bold">{{ user.username }}</h3>
         </div>
+
+
 
         <!-- Profile Content -->
         <div class="card-body p-4">
@@ -55,33 +74,40 @@
         </div>
 
         <!-- Modal for Changing Password -->
-        <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true" ng-show="showChangePasswordForm">
+        <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+            aria-hidden="true" ng-show="showChangePasswordForm">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg-warning text-white">
                         <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ng-click="toggleChangePasswordForm()"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            ng-click="toggleChangePasswordForm()"></button>
                     </div>
                     <div class="modal-body">
                         <form ng-submit="changePassword()">
                             <div class="mb-3">
                                 <label for="oldPassword" class="form-label">Old Password</label>
-                                <input type="password" id="oldPassword" ng-model="oldPassword" required class="form-control">
+                                <input type="password" id="oldPassword" ng-model="oldPassword" required
+                                    class="form-control">
                             </div>
                             <div class="mb-3">
                                 <label for="newPassword" class="form-label">New Password</label>
-                                <input type="password" id="newPassword" ng-model="newPassword" required class="form-control">
+                                <input type="password" id="newPassword" ng-model="newPassword" required
+                                    class="form-control">
                             </div>
                             <div class="mb-3">
                                 <label for="confirmNewPassword" class="form-label">Confirm New Password</label>
-                                <input type="password" id="confirmNewPassword" ng-model="confirmNewPassword" required class="form-control">
+                                <input type="password" id="confirmNewPassword" ng-model="confirmNewPassword" required
+                                    class="form-control">
                             </div>
                             <div ng-if="errorMessage" class="text-danger mb-3">{{ errorMessage }}</div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal" ng-click="toggleChangePasswordForm()">Cancel</button>
-                        <button type="submit" class="btn btn-warning rounded-pill" ng-click="changePassword()">Save Password</button>
+                        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal"
+                            ng-click="toggleChangePasswordForm()">Cancel</button>
+                        <button type="submit" class="btn btn-warning rounded-pill" ng-click="changePassword()">Save
+                            Password</button>
                     </div>
                 </div>
             </div>
