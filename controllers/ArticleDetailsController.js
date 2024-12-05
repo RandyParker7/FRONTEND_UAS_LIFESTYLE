@@ -176,4 +176,8 @@ app.controller('ArticleDetailsController', function($scope, $routeParams, $http)
     // Initial data fetch
     $scope.fetchCurrentUser();
     $scope.getComments();
+    
+    $scope.isLoginOrRegisterPage = function() {
+        return $location.path() === '/login' || $location.path() === '/register';
+    };
 });
