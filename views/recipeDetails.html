@@ -2,7 +2,7 @@
     <h1>{{ recipes.title }}</h1>
     <div style="white-space: pre-wrap;">{{ recipes.content }}</div>
 
-    <a href="#/food" class="btn btn-secondary">Back to Recipes</a>
+    <a href="#/food" class="btn btn-secondary" ng-if="isLoggedIn">Back to Recipes</a>
 
     <!-- Comments Section -->
     <div class="mt-4">
