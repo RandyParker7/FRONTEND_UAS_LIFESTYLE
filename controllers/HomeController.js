@@ -1,4 +1,6 @@
-app.controller('HomeController', function($scope, $timeout) {
+app.controller('HomeController', function($scope, $timeout, $window) {
+    $scope.isLoggedIn = !!localStorage.getItem('authToken');
+
     // Initial values for counters
     $scope.counters = [
         { value: 0, target: 1523, label: 'People Helped' },
@@ -30,7 +32,4 @@ app.controller('HomeController', function($scope, $timeout) {
             $scope.updateCounter(counter); 
         });
     }, 500); 
-    
 });
-
-

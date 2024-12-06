@@ -8,7 +8,6 @@ app.controller('LoginController', function($scope, $location, $http) {
                 const token = response.data.token;
                 console.log('Generated Token:', token);
                 localStorage.setItem('authToken', token);
-                
                 $location.path('/');
             })
             .catch(function(error) {

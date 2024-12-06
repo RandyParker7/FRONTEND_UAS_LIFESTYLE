@@ -84,8 +84,8 @@ app.controller('ProfileController', function($scope, $http, $location) {
         $http.delete('http://localhost:3000/api/deleteAccount', { headers: headers })
             .then(function(response) {
                 alert('Akun berhasil dihapus. Anda akan dialihkan ke halaman utama.');
-                localStorage.removeItem('authToken'); // Hapus token setelah akun dihapus
-                $location.path('/'); // Redirect ke halaman utama
+                localStorage.removeItem('authToken');
+                $location.path('/');
             })
             .catch(function(error) {
                 console.error('Error deleting account:', error);
@@ -96,21 +96,16 @@ app.controller('ProfileController', function($scope, $http, $location) {
     $scope.showChangePasswordForm = false;
 
     $scope.toggleChangePasswordForm = function() {
-        // Toggle the modal visibility
         $scope.showChangePasswordForm = !$scope.showChangePasswordForm;
     
-        // Reset form fields
         $scope.oldPassword = '';
         $scope.newPassword = '';
         $scope.confirmNewPassword = '';
-        $scope.errorMessage = '';  // Reset error message
+        $scope.errorMessage = '';
     
-        // Bootstrap Modal control: show or hide modal based on $scope.showChangePasswordForm
         if ($scope.showChangePasswordForm) {
-            // Use jQuery to manually trigger the modal if it's being shown
             $('#changePasswordModal').modal('show');
         } else {
-            // Close modal if it's being hidden
             $('#changePasswordModal').modal('hide');
         }
     };
@@ -132,7 +127,7 @@ app.controller('ProfileController', function($scope, $http, $location) {
         $http.post('http://localhost:3000/api/changePassword', payload, { headers: headers })
             .then(function(response) {
                 alert('Password berhasil diubah.');
-                $scope.toggleChangePasswordForm();  // Close the modal after success
+                $scope.toggleChangePasswordForm();
             })
             .catch(function(error) {
                 console.error('Error changing password:', error);
