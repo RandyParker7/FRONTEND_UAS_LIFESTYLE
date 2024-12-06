@@ -56,9 +56,10 @@
                         At <strong>FitZone</strong>, we are passionate about empowering individuals to embrace a healthier, stronger, and more fulfilling lifestyle. Through tailored workout plans, expert nutritional guidance, and a thriving community, we make wellness achievable and enjoyable for everyone.
                     </p>
                     <p class="text-muted">
-                        Our purpose is to inspire transformation by simplifying fitness and healthy living. Whether you’re taking your first steps or refining your journey as a fitness enthusiast, we’re here to guide you with unwavering support and encouragement.
+                        Our purpose is to inspire transformation by simplifying fitness and healthy living. Whether you're taking your first steps or refining your journey as a fitness enthusiast, we’re here to guide you with unwavering support and encouragement.
                     </p>
-                    <a href="#program" class="btn btn-primary mt-2 btn-custom">Explore Our Programs</a>
+                    <a ng-if="!isLoggedIn" href="#/login" class="btn btn-primary mt-2 btn-custom">Explore Our Programs</a>
+                    <a ng-if="isLoggedIn" href="#/article" class="btn btn-primary mt-2 btn-custom">Explore Our Programs</a>
                 </div>
             </div>
         </div>
@@ -163,7 +164,8 @@
                 <div class="col-md-4" data-aos="fade-right">
                     <h2 class="section-title">Your Body Transformation Begins Today!</h2>
                     <p class="section-description">Mulai perjalanan transformasi tubuh Anda hari ini dengan jadwal workout harian dan berbagai resep makanan sehat yang mendukung kebugaran Anda.</p>
-                    <a href="#/workout" class="btn mt-2 btn-custom">Make Your Own Workout Routine</a>
+                    <a ng-if="!isLoggedIn" href="#/login" class="btn mt-2 btn-custom">Make Your Own Workout Routine</a>
+                    <a ng-if="isLoggedIn" href="#/workout" class="btn mt-2 btn-custom">Make Your Own Workout Routine</a>
                 </div>
                 <div class="col-md-4">
                     <div class="image-wrapper text-center">
